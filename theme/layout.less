@@ -1,0 +1,43 @@
+.layout {
+  background: #EEF1F4;
+  padding-top: @navbar-height + @line-height-computed;
+
+  .navbar {
+    border: none;
+    border-radius: 0;
+    margin-bottom: 0;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    overflow-y: auto;
+    width: 250px;
+    height: auto;
+
+    .navbar-brand {
+      display: block;
+      float: none;
+    }
+
+    .navbar-nav,
+    .navbar-nav > li,
+    .navbar-left,
+    .navbar-right,
+    .navbar-header {
+      float: none !important;
+    }
+
+    .navbar-right .dropdown-menu {
+      left: 0;
+      right: auto;
+    }
+
+    .navbar-collapse .navbar-nav.navbar-right:last-child {
+      margin-right: 0;
+    }
+  }
+
+  .content {
+    margin-left: 250px;
+  }
+}

@@ -1,0 +1,36 @@
+<div class="container-fluid">
+    <div class="page-header">
+        <div class="pull-right">
+            <a class="btn btn-primary" href="#/mocks/create">
+                <i class="glyphicon glyphicon-plus"></i> Create
+            </a>
+
+            <button class="btn btn-danger" type="button" ng-click="vm.deleteAll()">
+                <i class="glyphicon glyphicon-remove"></i> Clear
+            </button>
+        </div>
+
+        <h1>Mocks</h1>
+
+        <div class="clearfix"></div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-16">
+            <div class="list-group">
+                <div class="list-group-item" ng-repeat="mock in vm.mocks" style="line-height: 22px">
+                    <div class="pull-right">
+                        <button class="btn btn-danger btn-xs" ng-click="vm.deleteMock(mock)">
+                            <i class="glyphicon glyphicon-trash"></i>
+                        </button>
+                    </div>
+
+                    <span class="label label-default text-center" style="min-width: 50px; margin-right: 10px">{{mock.method}}</span>
+                    <a href="/mocks/{{mock.id}}">{{mock.url}}</a>
+
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
