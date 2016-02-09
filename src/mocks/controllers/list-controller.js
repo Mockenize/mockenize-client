@@ -3,9 +3,10 @@
  */
 var _ = require('lodash');
 
-module.exports = function (mocks, mockService) {
+module.exports = function (mocks, mockService, apiUrl) {
     var vm = this;
     vm.mocks = mocks;
+    vm.apiUrl = apiUrl;
 
     vm.deleteAll = function () {
         if (confirm('Are you sure?')) {

@@ -1,0 +1,37 @@
+<div class="container-fluid">
+    <div class="page-header">
+        <div class="pull-right">
+            <button class="btn btn-danger" type="button" ng-click="vm.deleteAll()">
+                <i class="glyphicon glyphicon-remove"></i> Clear
+            </button>
+        </div>
+
+        <h1>Request Logs</h1>
+
+        <div class="clearfix"></div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="list-group">
+                <div class="list-group-item" ng-repeat="log in vm.logs" style="line-height: 22px">
+                    <div class="pull-right">
+                        <button class="btn btn-danger btn-xs" ng-click="vm.deleteLog(log)">
+                            <i class="glyphicon glyphicon-trash"></i>
+                        </button>
+                    </div>
+
+                    <div style="font-family: 'Ubuntu Mono', Monaco, monospace; white-space: nowrap; text-overflow: ellipsis; overflow: hidden; width: 95%">
+                        [{{log.date | date:'dd/MM/yy HH:mm:ss'}}]
+                        [<a href="#/logs/edit/{{log.key}}">{{log.key}}</a>]
+                        [{{log.type}}]
+                        [{{log.method}} {{log.path}}]
+                        [<span class="text-muted" style="font-style: italic">{{log.url}}</span>]
+                    </div>
+
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

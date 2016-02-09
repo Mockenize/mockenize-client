@@ -1,0 +1,122 @@
+<form name="mockForm" novalidate ng-submit="vm.save()">
+    <div class="container-fluid">
+        <div class="page-header">
+            <button class="btn btn-primary pull-right" type="submit" ng-disabled="mockForm.$invalid"
+                    ng-click="vm.save()">
+                <i class="glyphicon glyphicon-floppy-disk"></i> Save
+            </button>
+
+            <h1>
+                <a href="#/mocks">Mocks</a> / <span ng-if="!vm.mock.key">Create</span><span
+                    ng-if="vm.mock.key">Edit</span>
+            </h1>
+
+            <div class="clearfix"></div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <mk-formgroup model="vm.mock.path" type="text" label="Path" required="true"></mk-formgroup>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <mk-formgroup model="vm.mock.method" type="choice" label="Method"
+                                              options="method for method in vm.mockMethods"
+                                              required="true"></mk-formgroup>
+                            </div>
+
+                            <div class="col-md-6">
+                                <mk-formgroup model="vm.mock.responseCode" type="choice" label="Response Code"
+                                              options="responseCode.code as responseCode.label for responseCode in vm.mockResponseCodes"
+                                              required="true"></mk-formgroup>
+                            </div>
+                        </div>
+
+                        <mk-formgroup model="vm.mock.body" type="text-multiline" label="Response Body"
+                                      rows="10"></mk-formgroup>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h2 class="panel-title">
+                            Headers
+                        </h2>
+                    </div>
+
+                    <table id="mock-headers" class="table table-striped"
+                           style="margin-bottom: 0;">
+                        <tbody>
+                        <tr ng-repeat="header in vm.mock.headers">
+                            <td>
+                                <input type="text" class="form-control" placeholder="Key"
+                                       ng-model="header.key">
+                            </td>
+
+                            <td>
+                                <input type="text" class="form-control" placeholder="Key"
+                                       ng-model="header.value">
+                            </td>
+
+                            <td>
+                                <button type="button" class="btn btn-danger btn-block"
+                                        ng-click="vm.removeHeader(header)">
+                                    <i class="glyphicon glyphicon-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <input type="text" class="form-control" placeholder="Key"
+                                       ng-model="vm.selectedHeader.key">
+                            </td>
+
+                            <td>
+                                <input type="text" class="form-control" placeholder="Value"
+                                       ng-model="vm.selectedHeader.value">
+                            </td>
+
+                            <td>
+                                <button type="button" class="btn btn-success btn-block" ng-click="vm.addHeader()">
+                                    <i class="glyphicon glyphicon-check"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h2 class="panel-title">
+                            Settings
+                        </h2>
+                    </div>
+
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <mk-formgroup model="vm.mock.timeout" type="number" label="Timeout"></mk-formgroup>
+                            </div>
+
+                            <div class="col-md-4">
+                                <mk-formgroup model="vm.mock.maxTimeout" type="number"
+                                              label="Max Timeout"></mk-formgroup>
+                            </div>
+
+                            <div class="col-md-4">
+                                <mk-formgroup model="vm.mock.minTimeout" type="number"
+                                              label="Min Timeout"></mk-formgroup>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
