@@ -1,0 +1,28 @@
+<form name="proxyForm" novalidate ng-submit="vm.save()">
+    <div class="container-fluid">
+        <div class="page-header">
+            <button class="btn btn-primary pull-right" type="submit" ng-disabled="proxyForm.$invalid" ng-click="vm.save()">
+                <i class="glyphicon glyphicon-floppy-disk"></i> Save
+            </button>
+
+            <h1>
+                <a href="#/proxies">Proxies</a> / <span ng-if="!vm.proxy.key">Create</span><span
+                    ng-if="vm.proxy.key">Edit</span>
+            </h1>
+
+            <div class="clearfix"></div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <mk-formgroup model="vm.proxy.name" type="text" label="Name" required="true"></mk-formgroup>
+
+                        <mk-formgroup model="vm.proxy.url" type="text" label="Url" required="true"></mk-formgroup>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

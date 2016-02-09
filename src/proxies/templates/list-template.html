@@ -1,7 +1,7 @@
 <div class="container-fluid">
     <div class="page-header">
         <div class="pull-right">
-            <a class="btn btn-primary" href="#/mocks/create">
+            <a class="btn btn-primary" href="#/proxies/create">
                 <i class="glyphicon glyphicon-plus"></i> Create
             </a>
 
@@ -10,7 +10,7 @@
             </button>
         </div>
 
-        <h1>Mocks</h1>
+        <h1>Proxies</h1>
 
         <div class="clearfix"></div>
     </div>
@@ -18,18 +18,16 @@
     <div class="row">
         <div class="col-md-12">
             <div class="list-group">
-                <div class="list-group-item" ng-repeat="mock in vm.mocks" style="line-height: 22px">
+                <div class="list-group-item" ng-repeat="proxy in vm.proxies" style="line-height: 22px">
                     <div class="pull-right">
-                        <button class="btn btn-danger btn-xs" ng-click="vm.deleteMock(mock)">
+                        <button class="btn btn-danger btn-xs" ng-click="vm.deleteProxy(proxy)">
                             <i class="glyphicon glyphicon-trash"></i>
                         </button>
                     </div>
 
-                    <span class="label label-default text-center" style="min-width: 50px; margin-right: 10px">{{mock.method}}</span>
+                    <a href="#/proxies/edit/{{proxy.key}}" style="margin-right: 10px">{{proxy.name}}</a>
 
-                    <a href="#/mocks/edit/{{mock.key}}" style="margin-right: 10px">{{mock.path}}</a>
-
-                    <small class="text-muted" style="font-style: italic">{{vm.apiUrl}}/mock{{mock.path}}</small>
+                    <small class="text-muted" style="font-style: italic">{{vm.apiUrl}}/proxy/{{proxy.key}}</small>
 
                     <div class="clearfix"></div>
                 </div>

@@ -1,0 +1,28 @@
+<form name="logForm" novalidate ng-submit="vm.save()">
+    <div class="container-fluid">
+        <div class="page-header">
+            <button class="btn btn-primary pull-right" type="submit" ng-disabled="logForm.$invalid" ng-click="vm.save()">
+                <i class="glyphicon glyphicon-floppy-disk"></i> Save
+            </button>
+
+            <h1>
+                <a href="#/logs">Logs</a> / <span ng-if="!vm.log.key">Create</span><span
+                    ng-if="vm.log.key">Edit</span>
+            </h1>
+
+            <div class="clearfix"></div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <mk-formgroup model="vm.log.name" type="text" label="Name" required="true"></mk-formgroup>
+
+                        <mk-formgroup model="vm.log.url" type="text" label="Url" required="true"></mk-formgroup>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
