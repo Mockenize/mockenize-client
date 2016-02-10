@@ -92,4 +92,5 @@ grunt.initConfig({
     }
 });
 
-grunt.registerTask('default', ['copy', 'browserify', 'less', 'connect', 'watch']);
+grunt.registerTask('default', ['copy', 'browserify', 'less', 'connect']);
+grunt.registerTask('watch', ['copy', 'browserify', 'less', 'connect', 'watch']);

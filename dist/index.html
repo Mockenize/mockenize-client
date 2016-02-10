@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="mk.app" ng-jq="jQuery">
+<head>
+    <meta charset="UTF-8">
+    <title>Mockenize Client - 1.0.0</title>
+    <link rel="stylesheet" href="theme.css">
+</head>
+<body class="layout">
+    <mk-navbar></mk-navbar>
+
+    <div class="content">
+        <ng-view></ng-view>
+
+        <div class="footer text-muted text-center">
+            <p>
+                Designed and built by Mockenize <a href="https://github.com/orgs/Mockenize/people" target="_blank">contributors</a>.
+            </p>
+
+            <p>
+                Code licensed under <a href="http://choosealicense.com/licenses/mit/" target="_blank">MIT License</a>.
+            </p>
+
+            <p>
+                <a href="https://github.com/Mockenize/mockenize-server/issues?utf8=%E2%9C%93&q=is%3Aissue+is%3Aopen+" target="_blank">Issues</a>
+            </p>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

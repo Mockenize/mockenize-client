@@ -17,6 +17,14 @@
 
     <div class="row">
         <div class="col-md-12">
+            <div class="jumbotron text-center" ng-if="!vm.proxies.length">
+                <h1 class="text-info">
+                    You don't have created any proxies yet.
+                    <br>
+                    <small>Please create one to start!</small>
+                </h1>
+            </div>
+
             <div class="list-group">
                 <div class="list-group-item" ng-repeat="proxy in vm.proxies" style="line-height: 22px">
                     <div class="pull-right">

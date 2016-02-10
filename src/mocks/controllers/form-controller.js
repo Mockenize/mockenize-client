@@ -1,7 +1,7 @@
-module.exports = function (mock, mockMethods, mockResponseCodes, mockService, $location) {
+module.exports = function (mock, httpMethods, httpStatus, mockService, $location) {
     var vm = this;
-    vm.mockMethods = mockMethods;
-    vm.mockResponseCodes = mockResponseCodes;
+    vm.httpMethods = httpMethods;
+    vm.httpStatus = httpStatus;
     vm.selectedHeader = {};
     vm.mock = mock;
 

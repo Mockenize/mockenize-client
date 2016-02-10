@@ -13,6 +13,14 @@
 
     <div class="row">
         <div class="col-md-12">
+            <div class="jumbotron text-center" ng-if="!vm.logs.length">
+                <h1 class="text-info">
+                    There is no logs here yet.
+                    <br>
+                    <small>Please do some requests and come back later to see what happened!</small>
+                </h1>
+            </div>
+
             <div class="list-group">
                 <div class="list-group-item" ng-repeat="log in vm.logs" style="line-height: 22px">
                     <div class="pull-right">
@@ -21,13 +29,7 @@
                         </button>
                     </div>
 
-                    <div style="font-family: 'Ubuntu Mono', Monaco, monospace; white-space: nowrap; text-overflow: ellipsis; overflow: hidden; width: 95%">
-                        [{{log.date | date:'dd/MM/yy HH:mm:ss'}}]
-                        [<a href="#/logs/edit/{{log.key}}">{{log.key}}</a>]
-                        [{{log.type}}]
-                        [{{log.method}} {{log.path}}]
-                        [<span class="text-muted" style="font-style: italic">{{log.url}}</span>]
-                    </div>
+                    <samp style="display: block; white-space: pre; text-overflow: ellipsis; text-indent: 1em; overflow: hidden; width: 95%">[{{log.date | date:'dd/MM/yy HH:mm:ss.sss'}}] [<span class="text-info">{{log.type | padRight:5}}</span>] [{{log.response.responseCode}}] [<span class="text-info">{{log.method | padRight:7}}</span>] <a href="#/logs/show/{{log.key}}">{{log.path}}</a></samp>
 
                     <div class="clearfix"></div>
                 </div>

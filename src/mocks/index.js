@@ -57,9 +57,9 @@ mocksModule.config(function ($routeProvider) {
 
 mocksModule.service('mockService', require('./services/mock-service'));
 
-mocksModule.constant('mockMethods', ['GET', 'POST', 'PUT', 'DELETE']);
+mocksModule.constant('httpMethods', ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS']);
 
-mocksModule.constant('mockResponseCodes', [
+mocksModule.constant('httpStatus', [
     { code: 100, label: "100 CONTINUE" },
     { code: 101, label: "101 SWITCHING_PROTOCOLS" },
     { code: 102, label: "102 PROCESSING" },

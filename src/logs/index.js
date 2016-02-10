@@ -20,8 +20,8 @@ logsModule.config(function ($routeProvider) {
     });
 
     $routeProvider.when('/logs/show/:logKey', {
-        template: require('./templates/form-template.html'),
-        controller: require('./controllers/form-controller.js'),
+        template: require('./templates/show-template.html'),
+        controller: require('./controllers/show-controller.js'),
         controllerAs: 'vm',
         resolve: {
             log: function (logService, $route) {
