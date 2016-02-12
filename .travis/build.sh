@@ -6,7 +6,7 @@ npm install grunt-cli -g
 npm install
 grunt 
 
-if ![ $VERSION=~*SNAPSHOT* ]; then
+if ! [ $VERSION=~*SNAPSHOT* ]; then
 	echo "Deploying Webjar"
 	mvn deploy --settings .travis/maven-settings.xml
 fi
