@@ -1,7 +1,4 @@
 language: node_js
 install: true
 node_js: "0.10"
-before_script: 
-  - npm install grunt-cli -g
-  - npm install
-script: grunt
+script: sh .travis/build.sh
