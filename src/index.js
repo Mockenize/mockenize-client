@@ -10,7 +10,7 @@ var app = angular.module('mk.app', [
     require('./logs')
 ]);
 
-app.constant('apiUrl', window.location.origin + '/api');
+app.constant('apiUrl', window.location.origin);
 
 app.directive('mkNavbar', require('./directives/navbar/navbar-directive'));
 app.directive('mkFormgroup', require('./directives/formgroup/formgroup-directive'));

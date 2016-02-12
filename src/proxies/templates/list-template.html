@@ -33,9 +33,9 @@
                         </button>
                     </div>
 
-                    <a href="#/proxies/edit/{{proxy.key}}" style="margin-right: 10px">{{proxy.name}}</a>
+                    <a href="#/proxies/edit/{{::proxy.key}}" style="margin-right: 10px">{{::proxy.name}}</a>
 
-                    <small class="text-muted" style="font-style: italic">{{vm.apiUrl}}/proxy/{{proxy.key}}</small>
+                    <small class="text-muted" style="font-style: italic">{{::vm.apiUrl}}{{::proxy.path}}</small>
 
                     <div class="clearfix"></div>
                 </div>

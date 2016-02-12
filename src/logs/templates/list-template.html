@@ -29,7 +29,7 @@
                         </button>
                     </div>
 
-                    <samp style="display: block; white-space: pre; text-overflow: ellipsis; text-indent: 1em; overflow: hidden; width: 95%">[{{log.date | date:'dd/MM/yy HH:mm:ss.sss'}}] [<span class="text-info">{{log.type | padRight:5}}</span>] [{{log.response.responseCode}}] [<span class="text-info">{{log.method | padRight:7}}</span>] <a href="#/logs/show/{{log.key}}">{{log.path}}</a></samp>
+                    <samp style="display: block; white-space: pre; text-overflow: ellipsis; text-indent: 1em; overflow: hidden; width: 95%">[{{log.date | date:'dd/MM/yy HH:mm:ss.sss'}}] [{{log.response.status}}] [<span class="text-info">{{log.method | padRight:7}}</span>] <a href="#/logs/show/{{log.key}}">{{log.path}}</a></samp>
 
                     <div class="clearfix"></div>
                 </div>

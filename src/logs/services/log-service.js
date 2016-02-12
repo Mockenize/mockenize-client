@@ -2,7 +2,7 @@
  * Created by rwatanabe on 05/02/16.
  */
 module.exports = function ($http, apiUrl) {
-    var baseUrl = apiUrl.concat('/logs');
+    var baseUrl = apiUrl.concat('/_logs');
 
     this.getAll = function () {
         return $http.get(baseUrl).then(function (response) {

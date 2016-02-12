@@ -17,27 +17,26 @@
         <developerConnection>scm:git:git@github.com:Mockenize/mockenize-client.git</developerConnection>
     </scm>
 
+    <distributionManagement>
+        <repository>
+            <id>bintray-mockenize-mockenize</id>
+            <name>mockenize-mockenize</name>
+            <url>https://api.bintray.com/maven/mockenize/mockenize/mockenize-client/;publish=1</url>
+        </repository>
+    </distributionManagement>
+
     <build>
         <resources>
             <resource>
                 <directory>dist</directory>
-                <targetPath>META-INF/resources</targetPath>
+                <targetPath>META-INF/resources/_client</targetPath>
             </resource>
         </resources>
-
         <plugins>
             <plugin>
-                <groupId>pl.allegro</groupId>
-                <artifactId>grunt-maven-plugin</artifactId>
-                <version>1.4.1</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>npm</goal>
-                            <goal>grunt</goal>
-                        </goals>
-                    </execution>
-                </executions>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>2.5.3</version>
             </plugin>
         </plugins>
     </build>
