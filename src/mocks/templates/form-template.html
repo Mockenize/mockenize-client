@@ -1,8 +1,7 @@
 <form name="mockForm" novalidate ng-submit="vm.save()">
     <div class="container-fluid">
         <div class="page-header">
-            <button class="btn btn-primary pull-right" type="submit" ng-disabled="mockForm.$invalid"
-                    ng-click="vm.save()">
+            <button class="btn btn-primary pull-right" type="submit" ng-disabled="mockForm.$invalid">
                 <i class="glyphicon glyphicon-floppy-disk"></i> Save
             </button>
 
@@ -28,7 +27,7 @@
                             </div>
 
                             <div class="col-md-6">
-                                <mk-formgroup model="vm.mock.responseCode" type="choice" label="Response Code"
+                                <mk-formgroup model="vm.mock.status" type="choice" label="Response Code"
                                               options="httpStatus.code as httpStatus.label for httpStatus in vm.httpStatus"
                                               required="true"></mk-formgroup>
                             </div>

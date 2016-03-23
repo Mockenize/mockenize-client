@@ -3,7 +3,6 @@
  */
 var angular = require('angular');
 
-
 var mocksModule = angular.module('mk.mocks', []);
 
 mocksModule.config(function ($routeProvider) {
