@@ -8,7 +8,7 @@
     <packaging>jar</packaging>
 
     <name>Mockenize Client</name>
-    <description>The complete app for mockBean your responses</description>
+    <description>Administrator to Mockenize</description>
 
     <scm>
         <url>https://github.com/Mockenize/mockenize-client</url>
@@ -29,7 +29,7 @@
         <resources>
             <resource>
                 <directory>dist</directory>
-                <targetPath>META-INF/resources/_client</targetPath>
+                <targetPath>META-INF/resources/_mockenize/admin</targetPath>
             </resource>
         </resources>
         <plugins>

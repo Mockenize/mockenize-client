@@ -65011,7 +65011,7 @@ var angular = require('angular');
 
 var mocksModule = angular.module('mk.mocks', []);
 
-mocksModule.config(function ($routeProvider, $httpProvider) {
+mocksModule.config(function ($routeProvider) {
 
     $routeProvider.when('/mocks', {
         template: require('./templates/list-template.html'),
@@ -65188,9 +65188,6 @@ module.exports = function ($http, apiUrl) {
         });
 
         obj.headers = headers;
-        if(!obj.status) {
-          obj.status = 200;
-        }
         return obj;
     }
 };
