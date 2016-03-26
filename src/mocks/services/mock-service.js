@@ -18,7 +18,7 @@ module.exports = function ($http, apiUrl) {
     };
 
     this.delete = function (mock) {
-        return $http.delete(baseUrl, mock);
+        return $http.delete(baseUrl + '/' + mock.key);
     };
 
     this.deleteAll = function () {
@@ -53,6 +53,9 @@ module.exports = function ($http, apiUrl) {
         });
 
         obj.headers = headers;
+        if(typeof(obj.body) == 'object') {
+          obj.body = JSON.stringify(obj.body);
+        }
         return obj;
     }
 };
