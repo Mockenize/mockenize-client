@@ -64652,6 +64652,58 @@ return jQuery;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{}],11:[function(require,module,exports){
+module.exports = function (fileService, $location) {
+    var vm = this;
+
+    vm.upload = function () {
+        fileService.download().then(function () {
+            $location.path('/backup');
+        });
+    };
+};
+
+},{}],12:[function(require,module,exports){
+var angular = require('angular');
+
+
+var logsModule = angular.module('mk.backup', []);
+
+logsModule.config(function ($routeProvider) {
+
+    $routeProvider.when('/backup', {
+        template: require('./templates/form-template.html'),
+        controller: require('./controllers/form-controller.js'),
+        controllerAs: 'vm'
+    });
+
+});
+
+logsModule.service('backupService', require('./services/backup-service'));
+
+module.exports = logsModule.name;
+
+},{"./controllers/form-controller.js":11,"./services/backup-service":13,"./templates/form-template.html":14,"angular":8}],13:[function(require,module,exports){
+module.exports = function ($http, apiUrl) {
+    var baseUrl = apiUrl.concat('/_mockenize/file');
+
+    this.download = function () {
+        return $http.get(baseUrl + "/download").then(function (response) {
+            return response.data;
+        });
+    };
+
+    this.upload = function (key) {
+        return $http.post(baseUrl + "/upload").then(function (response) {
+            return dehydrate(response.data);
+        });
+    };
+
+};
+
+},{}],14:[function(require,module,exports){
+module.exports = "<form name=\"backupForm\" novalidate ng-submit=\"vm.upload()\">\n    <div class=\"container-fluid\">\n        <div class=\"page-header\">\n            <button class=\"btn btn-primary pull-right\" type=\"submit\">\n                <i class=\"glyphicon glyphicon-floppy-disk\"></i> Upload\n            </button>\n\n            <h1>\n                <a href=\"#/backup\">Mocks</a>\n            </h1>\n\n            <div class=\"clearfix\"></div>\n        </div>\n</form>\n";
+
+},{}],15:[function(require,module,exports){
 /**
  * Created by rwatanabe on 07/02/16.
  */
@@ -64747,10 +64799,10 @@ module.exports = function ($compile) {
         }
     }
 };
-},{"./formgroup-template.html":12,"angular":8,"lodash":10}],12:[function(require,module,exports){
+},{"./formgroup-template.html":16,"angular":8,"lodash":10}],16:[function(require,module,exports){
 module.exports = "<div class=\"form-group\">\n    <label class=\"control-label\"></label>\n    <div class=\"form-group-control\"></div>\n\n    <dl class=\"form-group-errors text-danger\">\n        <dt ng-message=\"required\">This field is required</dt>\n    </dl>\n</div>";
 
-},{}],13:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 /**
  * Created by rwatanabe on 05/02/16.
  */
@@ -64766,10 +64818,10 @@ module.exports = function () {
         }
     };
 };
-},{"./navbar-template.html":14}],14:[function(require,module,exports){
-module.exports = "<nav class=\"navbar navbar-default\">\n    <!-- Brand and toggle get grouped for better mobile display -->\n    <div class=\"navbar-header\">\n        <a class=\"navbar-brand\" href=\"http://mockenize.github.io\" target=\"_blank\">\n            <strong style=\"color: #293541\">{M}</strong>ockenize\n        </a>\n    </div>\n\n    <ul class=\"nav navbar-nav\">\n        <li ng-class=\"{ 'active': isRoute('/mocks') }\">\n            <a href=\"#/mocks\">Mocks</a>\n        </li>\n\n        <li ng-class=\"{ 'active': isRoute('/proxies') }\">\n            <a href=\"#/proxies\">Proxies</a>\n        </li>\n\n        <li ng-class=\"{ 'active': isRoute('/logs') }\">\n            <a href=\"#/logs\">Request Logs</a>\n        </li>\n\n        <li ng-class=\"{ 'active': isRoute('/about') }\">\n            <a href=\"https://mockenize.github.io\" target=\"_blank\">About</a>\n        </li>\n    </ul>\n</nav>";
+},{"./navbar-template.html":18}],18:[function(require,module,exports){
+module.exports = "<nav class=\"navbar navbar-default\">\n    <!-- Brand and toggle get grouped for better mobile display -->\n    <div class=\"navbar-header\">\n        <a class=\"navbar-brand\" href=\"http://mockenize.github.io\" target=\"_blank\">\n            <strong style=\"color: #293541\">{M}</strong>ockenize\n        </a>\n    </div>\n\n    <ul class=\"nav navbar-nav\">\n        <li ng-class=\"{ 'active': isRoute('/mocks') }\">\n            <a href=\"#/mocks\">Mocks</a>\n        </li>\n\n        <li ng-class=\"{ 'active': isRoute('/proxies') }\">\n            <a href=\"#/proxies\">Proxies</a>\n        </li>\n\n        <li ng-class=\"{ 'active': isRoute('/logs') }\">\n            <a href=\"#/logs\">Request Logs</a>\n        </li>\n\n        <li ng-class=\"{ 'active': isRoute('/backup') }\">\n            <a href=\"#/backup\">Backup</a>\n        </li>\n\n        <li ng-class=\"{ 'active': isRoute('/about') }\">\n            <a href=\"https://mockenize.github.io\" target=\"_blank\">About</a>\n        </li>\n    </ul>\n</nav>\n";
 
-},{}],15:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 /**
  * Created by rwatanabe on 08/02/16.
  */
@@ -64782,7 +64834,7 @@ module.exports = function (httpStatus) {
         return status.label || 'Unknown Status';
     };
 };
-},{"lodash":10}],16:[function(require,module,exports){
+},{"lodash":10}],20:[function(require,module,exports){
 /**
  * Created by rwatanabe on 08/02/16.
  */
@@ -64794,7 +64846,7 @@ module.exports = function () {
         return _.kebabCase(value);
     };
 };
-},{"lodash":10}],17:[function(require,module,exports){
+},{"lodash":10}],21:[function(require,module,exports){
 /**
  * Created by rwatanabe on 08/02/16.
  */
@@ -64806,7 +64858,7 @@ module.exports = function () {
         return _.padEnd(value, length);
     };
 };
-},{"lodash":10}],18:[function(require,module,exports){
+},{"lodash":10}],22:[function(require,module,exports){
 window.jQuery = require('jquery');
 var angular = require('angular');
 
@@ -64816,7 +64868,8 @@ var app = angular.module('mk.app', [
     require('angular-ui-bootstrap'),
     require('./mocks'),
     require('./proxies'),
-    require('./logs')
+    require('./logs'),
+    require('./backup')
 ]);
 
 app.constant('apiUrl', window.location.origin);
@@ -64832,7 +64885,7 @@ app.config(function ($routeProvider) {
     $routeProvider.otherwise('/mocks');
 });
 
-},{"./directives/formgroup/formgroup-directive":11,"./directives/navbar/navbar-directive":13,"./filters/httpstatus-filter":15,"./filters/kebabcase-filter":16,"./filters/padright-filter":17,"./logs":21,"./mocks":27,"./proxies":33,"angular":8,"angular-messages":2,"angular-route":4,"angular-ui-bootstrap":6,"jquery":9}],19:[function(require,module,exports){
+},{"./backup":12,"./directives/formgroup/formgroup-directive":15,"./directives/navbar/navbar-directive":17,"./filters/httpstatus-filter":19,"./filters/kebabcase-filter":20,"./filters/padright-filter":21,"./logs":25,"./mocks":31,"./proxies":37,"angular":8,"angular-messages":2,"angular-route":4,"angular-ui-bootstrap":6,"jquery":9}],23:[function(require,module,exports){
 /**
  * Created by rwatanabe on 05/02/16.
  */
@@ -64859,7 +64912,7 @@ module.exports = function (logs, logService, apiUrl) {
         }
     };
 };
-},{"lodash":10}],20:[function(require,module,exports){
+},{"lodash":10}],24:[function(require,module,exports){
 module.exports = function (log, logService, $location) {
     var vm = this;
     vm.log = log;
@@ -64874,7 +64927,7 @@ module.exports = function (log, logService, $location) {
         });
     };
 };
-},{}],21:[function(require,module,exports){
+},{}],25:[function(require,module,exports){
 /**
  * Created by rwatanabe on 05/02/16.
  */
@@ -64912,7 +64965,7 @@ logsModule.config(function ($routeProvider) {
 logsModule.service('logService', require('./services/log-service'));
 
 module.exports = logsModule.name;
-},{"./controllers/list-controller.js":19,"./controllers/show-controller.js":20,"./services/log-service":22,"./templates/list-template.html":23,"./templates/show-template.html":24,"angular":8}],22:[function(require,module,exports){
+},{"./controllers/list-controller.js":23,"./controllers/show-controller.js":24,"./services/log-service":26,"./templates/list-template.html":27,"./templates/show-template.html":28,"angular":8}],26:[function(require,module,exports){
 /**
  * Created by rwatanabe on 05/02/16.
  */
@@ -64946,13 +64999,13 @@ module.exports = function ($http, apiUrl) {
     };
 };
 
-},{}],23:[function(require,module,exports){
+},{}],27:[function(require,module,exports){
 module.exports = "<div class=\"container-fluid\">\n    <div class=\"page-header\">\n        <div class=\"pull-right\">\n            <button class=\"btn btn-danger\" type=\"button\" ng-click=\"vm.deleteAll()\">\n                <i class=\"glyphicon glyphicon-remove\"></i> Clear\n            </button>\n        </div>\n\n        <h1>Request Logs</h1>\n\n        <div class=\"clearfix\"></div>\n    </div>\n\n    <div class=\"row\">\n        <div class=\"col-md-12\">\n            <div class=\"jumbotron text-center\" ng-if=\"!vm.logs.length\">\n                <h1 class=\"text-info\">\n                    There is no logs here yet.\n                    <br>\n                    <small>Please do some requests and come back later to see what happened!</small>\n                </h1>\n            </div>\n\n            <div class=\"list-group\">\n                <div class=\"list-group-item\" ng-repeat=\"log in vm.logs\" style=\"line-height: 22px\">\n                    <div class=\"pull-right\">\n                        <button class=\"btn btn-danger btn-xs\" ng-click=\"vm.deleteLog(log)\">\n                            <i class=\"glyphicon glyphicon-trash\"></i>\n                        </button>\n                    </div>\n\n                    <samp style=\"display: block; white-space: pre; text-overflow: ellipsis; text-indent: 1em; overflow: hidden; width: 95%\">[{{log.date | date:'dd/MM/yy HH:mm:ss.sss'}}] [{{log.response.status}}] [<span class=\"text-info\">{{log.method | padRight:7}}</span>] <a href=\"#/logs/show/{{log.key}}\">{{log.path}}</a></samp>\n\n                    <div class=\"clearfix\"></div>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>";
 
-},{}],24:[function(require,module,exports){
+},{}],28:[function(require,module,exports){
 module.exports = "<div class=\"container-fluid\">\n    <div class=\"page-header\">\n        <button class=\"btn btn-danger pull-right\" ng-click=\"vm.delete()\">\n            <i class=\"glyphicon glyphicon-trash\"></i> Delete\n        </button>\n\n        <h1>\n            <a href=\"#/logs\">Request Logs</a> / Show\n        </h1>\n\n        <div class=\"clearfix\"></div>\n    </div>\n\n    <div class=\"row\">\n        <div class=\"col-md-12\">\n            <div class=\"panel panel-default\">\n                <div class=\"panel-body\">\n                    <div class=\"col-xs-12\">\n                        <div class=\"form-group\">\n                            <label for=\"log-url\" class=\"control-label\" style=\"width: 60px\">Url</label>\n                            <span id=\"log-url\" class=\"form-control-static\">{{vm.log.url}}</span>\n                        </div>\n                    </div>\n\n                    <div class=\"col-xs-6\">\n                        <div class=\"form-group\">\n                            <label for=\"log-method\" class=\"control-label\" style=\"width: 60px\">Method</label>\n                            <span id=\"log-method\" class=\"form-control-static\">{{vm.log.method}}</span>\n                        </div>\n\n                        <div class=\"form-group\" style=\"margin-bottom: 0\">\n                            <label for=\"log-status\" class=\"control-label\" style=\"width: 60px\">Status</label>\n                            <span id=\"log-status\" class=\"form-control-static\">{{vm.log.response.status | httpStatus}}</span>\n                        </div>\n                    </div>\n\n                    <div class=\"col-xs-6\">\n                        <div class=\"form-group\">\n                            <label for=\"log-type\" class=\"control-label\" style=\"width: 60px\">Type</label>\n                            <span id=\"log-type\" class=\"form-control-static\">{{vm.log.type}}</span>\n                        </div>\n\n                        <div class=\"form-group\" style=\"margin-bottom: 0\">\n                            <label for=\"log-date\" class=\"control-label\" style=\"width: 60px\">Date</label>\n                            <span id=\"log-date\" class=\"form-control-static\">{{vm.log.date | date:'dd/MM/yy HH:mm:ss.sss'}}</span>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n\n        <div class=\"col-md-6\">\n            <div class=\"panel panel-default\">\n                <div class=\"panel-heading\">\n                    <button class=\"btn btn-link btn-xs pull-right\" ng-click=\"showRequestHeaders = !showRequestHeaders\">\n                        Toggle Headers\n                    </button>\n\n                    <h2 class=\"panel-title\">\n                        Request\n                    </h2>\n                </div>\n\n                <div class=\"panel-body\">\n                    <div ng-if=\"showRequestHeaders\">\n                        <h3 style=\"margin-bottom: 10px\">\n                            Headers\n                        </h3>\n\n                        <table class=\"table table-striped table-condensed table-bordered\">\n                            <tbody>\n                            <tr ng-repeat=\"(key, value) in vm.log.request.headers\">\n                                <td style=\"min-width: 150px\">{{key}}</td>\n                                <td>{{value}}</td>\n                            </tr>\n                            </tbody>\n                        </table>\n                    </div>\n\n                    <pre>{{vm.log.request.body | json}}</pre>\n                </div>\n            </div>\n        </div>\n\n\n        <div class=\"col-md-6\">\n            <div class=\"panel panel-default\">\n                <div class=\"panel-heading\">\n                    <button class=\"btn btn-link btn-xs pull-right\" ng-click=\"showResponseHeaders = !showResponseHeaders\">\n                        Toggle Headers\n                    </button>\n\n                    <h2 class=\"panel-title\">\n                        Response\n                    </h2>\n                </div>\n\n                <div class=\"panel-body\">\n                    <div ng-if=\"showResponseHeaders\">\n                        <h3 style=\"margin-bottom: 10px\">\n                            Headers\n                        </h3>\n\n                        <table class=\"table table-striped table-condensed table-bordered\">\n                            <tbody>\n                            <tr ng-repeat=\"(key, value) in vm.log.request.headers\">\n                                <td style=\"min-width: 150px\">{{key}}</td>\n                                <td>{{value}}</td>\n                            </tr>\n                            </tbody>\n                        </table>\n                    </div>\n\n                    <pre>{{vm.log.response.body | json}}</pre>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>";
 
-},{}],25:[function(require,module,exports){
+},{}],29:[function(require,module,exports){
 module.exports = function (mock, httpMethods, httpStatus, mockService, $location) {
     var vm = this;
     vm.httpMethods = httpMethods;
@@ -64976,7 +65029,7 @@ module.exports = function (mock, httpMethods, httpStatus, mockService, $location
     };
 };
 
-},{}],26:[function(require,module,exports){
+},{}],30:[function(require,module,exports){
 /**
  * Created by rwatanabe on 05/02/16.
  */
@@ -65003,7 +65056,7 @@ module.exports = function (mocks, mockService, apiUrl) {
         }
     };
 };
-},{"lodash":10}],27:[function(require,module,exports){
+},{"lodash":10}],31:[function(require,module,exports){
 /**
  * Created by rwatanabe on 05/02/16.
  */
@@ -65132,7 +65185,7 @@ mocksModule.constant('httpStatus', [
 
 module.exports = mocksModule.name;
 
-},{"./controllers/form-controller.js":25,"./controllers/list-controller.js":26,"./services/mock-service":28,"./templates/form-template.html":29,"./templates/list-template.html":30,"angular":8}],28:[function(require,module,exports){
+},{"./controllers/form-controller.js":29,"./controllers/list-controller.js":30,"./services/mock-service":32,"./templates/form-template.html":33,"./templates/list-template.html":34,"angular":8}],32:[function(require,module,exports){
 /**
  * Created by rwatanabe on 05/02/16.
  */
@@ -65195,13 +65248,13 @@ module.exports = function ($http, apiUrl) {
     }
 };
 
-},{}],29:[function(require,module,exports){
+},{}],33:[function(require,module,exports){
 module.exports = "<form name=\"mockForm\" novalidate ng-submit=\"vm.save()\">\n    <div class=\"container-fluid\">\n        <div class=\"page-header\">\n            <button class=\"btn btn-primary pull-right\" type=\"submit\" ng-disabled=\"mockForm.$invalid\">\n                <i class=\"glyphicon glyphicon-floppy-disk\"></i> Save\n            </button>\n\n            <h1>\n                <a href=\"#/mocks\">Mocks</a> / <span ng-if=\"!vm.mock.key\">Create</span><span\n                    ng-if=\"vm.mock.key\">Edit</span>\n            </h1>\n\n            <div class=\"clearfix\"></div>\n        </div>\n\n        <div class=\"row\">\n            <div class=\"col-md-6\">\n                <div class=\"panel panel-default\">\n                    <div class=\"panel-body\">\n                        <mk-formgroup model=\"vm.mock.path\" type=\"text\" label=\"Path\" required=\"true\"></mk-formgroup>\n\n                        <div class=\"row\">\n                            <div class=\"col-md-6\">\n                                <mk-formgroup model=\"vm.mock.method\" type=\"choice\" label=\"Method\"\n                                              options=\"method for method in vm.httpMethods\"\n                                              required=\"true\"></mk-formgroup>\n                            </div>\n\n                            <div class=\"col-md-6\">\n                                <mk-formgroup model=\"vm.mock.status\" type=\"choice\" label=\"Response Code\"\n                                              options=\"httpStatus.code as httpStatus.label for httpStatus in vm.httpStatus\"\n                                              required=\"true\"></mk-formgroup>\n                            </div>\n                        </div>\n\n                        <mk-formgroup model=\"vm.mock.body\" type=\"text-multiline\" label=\"Response Body\"\n                                      rows=\"10\"></mk-formgroup>\n                    </div>\n                </div>\n            </div>\n\n            <div class=\"col-md-6\">\n                <div class=\"panel panel-default\">\n                    <div class=\"panel-heading\">\n                        <h2 class=\"panel-title\">\n                            Headers\n                        </h2>\n                    </div>\n\n                    <table id=\"mock-headers\" class=\"table table-striped\"\n                           style=\"margin-bottom: 0;\">\n                        <tbody>\n                        <tr ng-repeat=\"header in vm.mock.headers\">\n                            <td>\n                                <input type=\"text\" class=\"form-control\" placeholder=\"Key\"\n                                       ng-model=\"header.key\">\n                            </td>\n\n                            <td>\n                                <input type=\"text\" class=\"form-control\" placeholder=\"Key\"\n                                       ng-model=\"header.value\">\n                            </td>\n\n                            <td>\n                                <button type=\"button\" class=\"btn btn-danger btn-block\"\n                                        ng-click=\"vm.removeHeader(header)\">\n                                    <i class=\"glyphicon glyphicon-trash\"></i>\n                                </button>\n                            </td>\n                        </tr>\n\n                        <tr>\n                            <td>\n                                <input type=\"text\" class=\"form-control\" placeholder=\"Key\"\n                                       ng-model=\"vm.selectedHeader.key\">\n                            </td>\n\n                            <td>\n                                <input type=\"text\" class=\"form-control\" placeholder=\"Value\"\n                                       ng-model=\"vm.selectedHeader.value\">\n                            </td>\n\n                            <td>\n                                <button type=\"button\" class=\"btn btn-success btn-block\" ng-click=\"vm.addHeader()\">\n                                    <i class=\"glyphicon glyphicon-check\"></i>\n                                </button>\n                            </td>\n                        </tr>\n                        </tbody>\n                    </table>\n                </div>\n\n                <div class=\"panel panel-default\">\n                    <div class=\"panel-heading\">\n                        <h2 class=\"panel-title\">\n                            Settings\n                        </h2>\n                    </div>\n\n                    <div class=\"panel-body\">\n                        <div class=\"row\">\n                            <div class=\"col-md-4\">\n                                <mk-formgroup model=\"vm.mock.timeout\" type=\"number\" label=\"Timeout\"></mk-formgroup>\n                            </div>\n\n                            <div class=\"col-md-4\">\n                                <mk-formgroup model=\"vm.mock.maxTimeout\" type=\"number\"\n                                              label=\"Max Timeout\"></mk-formgroup>\n                            </div>\n\n                            <div class=\"col-md-4\">\n                                <mk-formgroup model=\"vm.mock.minTimeout\" type=\"number\"\n                                              label=\"Min Timeout\"></mk-formgroup>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</form>\n";
 
-},{}],30:[function(require,module,exports){
+},{}],34:[function(require,module,exports){
 module.exports = "<div class=\"container-fluid\">\n    <div class=\"page-header\">\n        <div class=\"pull-right\">\n            <a class=\"btn btn-primary\" href=\"#/mocks/create\">\n                <i class=\"glyphicon glyphicon-plus\"></i> Create\n            </a>\n\n            <button class=\"btn btn-danger\" type=\"button\" ng-click=\"vm.deleteAll()\">\n                <i class=\"glyphicon glyphicon-remove\"></i> Clear\n            </button>\n        </div>\n\n        <h1>Mocks</h1>\n\n        <div class=\"clearfix\"></div>\n    </div>\n\n    <div class=\"row\">\n        <div class=\"col-md-12\">\n            <div class=\"jumbotron text-center\" ng-if=\"!vm.mocks.length\">\n                <h1 class=\"text-info\">\n                    You don't have created any mocks yet.\n                    <br>\n                    <small>Please create one to start!</small>\n                </h1>\n            </div>\n\n            <div class=\"list-group\">\n                <div class=\"list-group-item\" ng-repeat=\"mock in vm.mocks\" style=\"line-height: 22px\">\n                    <div class=\"pull-right\">\n                        <button class=\"btn btn-danger btn-xs\" ng-click=\"vm.deleteMock(mock)\">\n                            <i class=\"glyphicon glyphicon-trash\"></i>\n                        </button>\n                    </div>\n\n                    <span class=\"label label-default text-center\" style=\"min-width: 50px; margin-right: 10px\">{{mock.method}}</span>\n\n                    <a href=\"#/mocks/edit/{{mock.key}}\" style=\"margin-right: 10px\">{{mock.path}}</a>\n\n                    <small class=\"text-muted\" style=\"font-style: italic\">{{vm.apiUrl}}/mock{{mock.path}}</small>\n\n                    <div class=\"clearfix\"></div>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>";
 
-},{}],31:[function(require,module,exports){
+},{}],35:[function(require,module,exports){
 module.exports = function (proxy, proxyService, $location) {
     var vm = this;
     vm.proxy = proxy;
@@ -65212,7 +65265,7 @@ module.exports = function (proxy, proxyService, $location) {
         });
     };
 };
-},{}],32:[function(require,module,exports){
+},{}],36:[function(require,module,exports){
 /**
  * Created by rwatanabe on 05/02/16.
  */
@@ -65239,7 +65292,7 @@ module.exports = function (proxies, proxyService, apiUrl) {
         }
     };
 };
-},{"lodash":10}],33:[function(require,module,exports){
+},{"lodash":10}],37:[function(require,module,exports){
 /**
  * Created by rwatanabe on 05/02/16.
  */
@@ -65300,7 +65353,7 @@ proxiesModule.config(function ($routeProvider) {
 proxiesModule.service('proxyService', require('./services/proxy-service'));
 
 module.exports = proxiesModule.name;
-},{"./controllers/form-controller.js":31,"./controllers/list-controller.js":32,"./services/proxy-service":34,"./templates/form-template.html":35,"./templates/list-template.html":36,"angular":8}],34:[function(require,module,exports){
+},{"./controllers/form-controller.js":35,"./controllers/list-controller.js":36,"./services/proxy-service":38,"./templates/form-template.html":39,"./templates/list-template.html":40,"angular":8}],38:[function(require,module,exports){
 /**
  * Created by rwatanabe on 05/02/16.
  */
@@ -65334,10 +65387,10 @@ module.exports = function ($http, apiUrl) {
     };
 };
 
-},{}],35:[function(require,module,exports){
+},{}],39:[function(require,module,exports){
 module.exports = "<form name=\"proxyForm\" novalidate ng-submit=\"vm.save()\">\n    <div class=\"container-fluid\">\n        <div class=\"page-header\">\n            <button class=\"btn btn-primary pull-right\" type=\"submit\" ng-disabled=\"proxyForm.$invalid\" ng-click=\"vm.save()\">\n                <i class=\"glyphicon glyphicon-floppy-disk\"></i> Save\n            </button>\n\n            <h1>\n                <a href=\"#/proxies\">Proxies</a> / <span ng-if=\"!vm.proxy.key\">Create</span><span\n                    ng-if=\"vm.proxy.key\">Edit</span>\n            </h1>\n\n            <div class=\"clearfix\"></div>\n        </div>\n\n        <div class=\"row\">\n            <div class=\"col-md-12\">\n                <div class=\"panel panel-default\">\n                    <div class=\"panel-body\">\n                        <mk-formgroup model=\"vm.proxy.name\" type=\"text\" label=\"Name\" required=\"true\"></mk-formgroup>\n\n                        <mk-formgroup model=\"vm.proxy.path\" type=\"text\" label=\"Path\" required=\"true\"></mk-formgroup>\n\n                        <mk-formgroup model=\"vm.proxy.url\" type=\"text\" label=\"Url\" required=\"true\"></mk-formgroup>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</form>\n";
 
-},{}],36:[function(require,module,exports){
+},{}],40:[function(require,module,exports){
 module.exports = "<div class=\"container-fluid\">\n    <div class=\"page-header\">\n        <div class=\"pull-right\">\n            <a class=\"btn btn-primary\" href=\"#/proxies/create\">\n                <i class=\"glyphicon glyphicon-plus\"></i> Create\n            </a>\n\n            <button class=\"btn btn-danger\" type=\"button\" ng-click=\"vm.deleteAll()\">\n                <i class=\"glyphicon glyphicon-remove\"></i> Clear\n            </button>\n        </div>\n\n        <h1>Proxies</h1>\n\n        <div class=\"clearfix\"></div>\n    </div>\n\n    <div class=\"row\">\n        <div class=\"col-md-12\">\n            <div class=\"jumbotron text-center\" ng-if=\"!vm.proxies.length\">\n                <h1 class=\"text-info\">\n                    You don't have created any proxies yet.\n                    <br>\n                    <small>Please create one to start!</small>\n                </h1>\n            </div>\n\n            <div class=\"list-group\">\n                <div class=\"list-group-item\" ng-repeat=\"proxy in vm.proxies\" style=\"line-height: 22px\">\n                    <div class=\"pull-right\">\n                        <button class=\"btn btn-danger btn-xs\" ng-click=\"vm.deleteProxy(proxy)\">\n                            <i class=\"glyphicon glyphicon-trash\"></i>\n                        </button>\n                    </div>\n\n                    <a href=\"#/proxies/edit/{{::proxy.key}}\" style=\"margin-right: 10px\">{{::proxy.name}}</a>\n\n                    <small class=\"text-muted\" style=\"font-style: italic\">{{::vm.apiUrl}}{{::proxy.path}}</small>\n\n                    <div class=\"clearfix\"></div>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>";
 
-},{}]},{},[18]);
+},{}]},{},[22]);

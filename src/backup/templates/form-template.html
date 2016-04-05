@@ -1,0 +1,39 @@
+<form name="backupForm" novalidate ng-submit="vm.upload()">
+    <div class="container-fluid">
+        <div class="page-header">
+            <h1>
+                <a href="#/backup">Backup</a>
+            </h1>
+
+            <div class="clearfix"></div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <mk-formgroup model="vm.mock.path" type="text" label="Path" required="true"></mk-formgroup>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <mk-formgroup model="vm.mock.method" type="choice" label="Method"
+                                              options="method for method in vm.httpMethods"
+                                              required="true"></mk-formgroup>
+                            </div>
+
+                            <div class="col-md-6">
+                                <mk-formgroup model="vm.mock.status" type="choice" label="Response Code"
+                                              options="httpStatus.code as httpStatus.label for httpStatus in vm.httpStatus"
+                                              required="true"></mk-formgroup>
+                            </div>
+                        </div>
+
+                        <mk-formgroup model="vm.mock.body" type="text-multiline" label="Response Body" rows="10"></mk-formgroup>
+                    </div>
+                </div>
+            </div>
+
+        <button class="btn btn-primary pull-right" type="submit">
+            <i class="glyphicon glyphicon-floppy-disk"></i> Upload
+        </button>
+</form>
