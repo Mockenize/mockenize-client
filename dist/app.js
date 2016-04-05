@@ -65032,13 +65032,13 @@ mocksModule.config(function ($routeProvider) {
             mock: function () {
                 return {
                     method: 'GET',
-                    responseCode: 200,
+                    status: 200,
                     timeout: 0,
                     minTimeout: 0,
                     maxTimeout: 0,
                     headers: [
                         {
-                            key: 'Content-type',
+                            key: 'Content-Type',
                             value: 'application/json'
                         }
                     ]
@@ -65174,6 +65174,9 @@ module.exports = function ($http, apiUrl) {
         });
 
         obj.headers = headers;
+        if(headers['Content-Type'] == "application/json") {
+          obj.body = JSON.parse(obj.body);
+        }
         return obj;
     }
 
@@ -65275,7 +65278,7 @@ proxiesModule.config(function ($routeProvider) {
                     maxTimeout: 0,
                     headers: [
                         {
-                            key: 'Content-type',
+                            key: 'Content-Type',
                             value: 'application/json'
                         }
                     ]
@@ -65300,6 +65303,7 @@ proxiesModule.config(function ($routeProvider) {
 proxiesModule.service('proxyService', require('./services/proxy-service'));
 
 module.exports = proxiesModule.name;
+
 },{"./controllers/form-controller.js":31,"./controllers/list-controller.js":32,"./services/proxy-service":34,"./templates/form-template.html":35,"./templates/list-template.html":36,"angular":8}],34:[function(require,module,exports){
 /**
  * Created by rwatanabe on 05/02/16.

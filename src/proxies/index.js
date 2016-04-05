@@ -33,7 +33,7 @@ proxiesModule.config(function ($routeProvider) {
                     maxTimeout: 0,
                     headers: [
                         {
-                            key: 'Content-type',
+                            key: 'Content-Type',
                             value: 'application/json'
                         }
                     ]

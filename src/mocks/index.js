@@ -26,13 +26,13 @@ mocksModule.config(function ($routeProvider) {
             mock: function () {
                 return {
                     method: 'GET',
-                    responseCode: 200,
+                    status: 200,
                     timeout: 0,
                     minTimeout: 0,
                     maxTimeout: 0,
                     headers: [
                         {
-                            key: 'Content-type',
+                            key: 'Content-Type',
                             value: 'application/json'
                         }
                     ]
