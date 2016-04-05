@@ -39,7 +39,7 @@ module.exports = function ($http, apiUrl) {
         });
 
         obj.headers = headers;
-        if(headers['Content-Type'] == "application/json") {
+        if(headers['Content-Type'] == "application/json" && obj.body) {
           obj.body = JSON.parse(obj.body);
         }
         return obj;

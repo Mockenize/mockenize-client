@@ -5,7 +5,7 @@ module.exports = function ($http, apiUrl) {
     var baseUrl = apiUrl.concat('/_mockenize/proxies');
 
     this.getAll = function () {
-        return $http.get(baseUrl + '/all').then(function (response) {
+        return $http.get(baseUrl).then(function (response) {
             return response.data;
         });
     };
