@@ -1,4 +1,4 @@
-<form name="backupForm" novalidate ng-submit="vm.upload()">
+<form name="backupForm" novalidate>
     <div class="container-fluid">
         <div class="page-header">
             <h1>
@@ -7,33 +7,41 @@
 
             <div class="clearfix"></div>
         </div>
+    </div>
 
-        <div class="row">
-            <div class="col-md-6">
-                <div class="panel panel-default">
-                    <div class="panel-body">
-                        <mk-formgroup model="vm.mock.path" type="text" label="Path" required="true"></mk-formgroup>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-body">
 
-                        <div class="row">
-                            <div class="col-md-6">
-                                <mk-formgroup model="vm.mock.method" type="choice" label="Method"
-                                              options="method for method in vm.httpMethods"
-                                              required="true"></mk-formgroup>
-                            </div>
-
-                            <div class="col-md-6">
-                                <mk-formgroup model="vm.mock.status" type="choice" label="Response Code"
-                                              options="httpStatus.code as httpStatus.label for httpStatus in vm.httpStatus"
-                                              required="true"></mk-formgroup>
-                            </div>
-                        </div>
-
-                        <mk-formgroup model="vm.mock.body" type="text-multiline" label="Response Body" rows="10"></mk-formgroup>
+                  <div class="col-lg-6">
+                    <div class="input-group">
+                        <span class="input-group-btn">
+                            <span class="btn btn-primary btn-file">
+                                Browse… <input type="file" id="file" onchange="angular.element(this).scope().uploadFile(this)">
+                            </span>
+                        </span>
+                        <input type="text" id="fileName" class="form-control" readonly="">
                     </div>
+                    <span class="help-block">
+                        Select your file to upload
+                    </span>
+                  </div>
+
+                  <div class="col-md-2">
+                  <button class="btn btn-primary pull-left" ng-click="upload()">
+                      <i class="glyphicon glyphicon-floppy-disk"></i> Upload
+                  </button>
+                  </div>
+
+                  <div class="col-md-4">
+                    <a target="_self" class="btn btn-primary pull-right" href="../file/download">
+                        <i class="glyphicon glyphicon-floppy-disk"></i> Download
+                    </a>
+                  </div>
+
                 </div>
             </div>
-
-        <button class="btn btn-primary pull-right" type="submit">
-            <i class="glyphicon glyphicon-floppy-disk"></i> Upload
-        </button>
+        </div>
+      </div>
 </form>

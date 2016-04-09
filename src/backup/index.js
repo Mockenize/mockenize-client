@@ -1,9 +1,9 @@
 var angular = require('angular');
 
 
-var logsModule = angular.module('mk.backup', []);
+var backupModule = angular.module('mk.backup', []);
 
-logsModule.config(function ($routeProvider) {
+backupModule.config(function ($routeProvider) {
 
     $routeProvider.when('/backup', {
         template: require('./templates/form-template.html'),
@@ -13,6 +13,6 @@ logsModule.config(function ($routeProvider) {
 
 });
 
-logsModule.service('backupService', require('./services/backup-service'));
+backupModule.service('backupService', require('./services/backup-service'));
 
-module.exports = logsModule.name;
+module.exports = backupModule.name;

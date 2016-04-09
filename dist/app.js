@@ -64652,23 +64652,26 @@ return jQuery;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{}],11:[function(require,module,exports){
-module.exports = function (fileService, $location) {
-    var vm = this;
+module.exports = function (backupService, $route, $scope) {
 
-    vm.upload = function () {
-        fileService.download().then(function () {
-            $location.path('/backup');
-        });
+    $scope.upload = function () {
+        backupService.upload();
     };
+
+    $scope.uploadFile = function(element) {
+      document.getElementById("fileName").value = element.value;
+    };
+
+
 };
 
 },{}],12:[function(require,module,exports){
 var angular = require('angular');
 
 
-var logsModule = angular.module('mk.backup', []);
+var backupModule = angular.module('mk.backup', []);
 
-logsModule.config(function ($routeProvider) {
+backupModule.config(function ($routeProvider) {
 
     $routeProvider.when('/backup', {
         template: require('./templates/form-template.html'),
@@ -64678,30 +64681,42 @@ logsModule.config(function ($routeProvider) {
 
 });
 
-logsModule.service('backupService', require('./services/backup-service'));
+backupModule.service('backupService', require('./services/backup-service'));
 
-module.exports = logsModule.name;
+module.exports = backupModule.name;
 
 },{"./controllers/form-controller.js":11,"./services/backup-service":13,"./templates/form-template.html":14,"angular":8}],13:[function(require,module,exports){
 module.exports = function ($http, apiUrl) {
     var baseUrl = apiUrl.concat('/_mockenize/file');
 
-    this.download = function () {
-        return $http.get(baseUrl + "/download").then(function (response) {
-            return response.data;
-        });
-    };
-
     this.upload = function (key) {
-        return $http.post(baseUrl + "/upload").then(function (response) {
-            return dehydrate(response.data);
-        });
-    };
+        var f = document.getElementById('file').files[0];
+        if(f) {
+          r = new FileReader();
+          r.onloadend = function(e) {
+            var data = e.target.result;
 
+            $http({
+              method: 'POST',
+              url: baseUrl + '/upload',
+              data: data,
+              headers: {
+                  'Content-Type': 'application/octet-stream'
+              }
+            }).then(function (response) {
+                alert("Import file with sucess!");
+            }, function (response) {
+              alert(response.data);
+            });
+          }
+
+          r.readAsBinaryString(f);
+        }
+    };
 };
 
 },{}],14:[function(require,module,exports){
-module.exports = "<form name=\"backupForm\" novalidate ng-submit=\"vm.upload()\">\n    <div class=\"container-fluid\">\n        <div class=\"page-header\">\n            <button class=\"btn btn-primary pull-right\" type=\"submit\">\n                <i class=\"glyphicon glyphicon-floppy-disk\"></i> Upload\n            </button>\n\n            <h1>\n                <a href=\"#/backup\">Mocks</a>\n            </h1>\n\n            <div class=\"clearfix\"></div>\n        </div>\n</form>\n";
+module.exports = "<form name=\"backupForm\" novalidate>\n    <div class=\"container-fluid\">\n        <div class=\"page-header\">\n            <h1>\n                <a href=\"#/backup\">Backup</a>\n            </h1>\n\n            <div class=\"clearfix\"></div>\n        </div>\n    </div>\n\n    <div class=\"row\">\n        <div class=\"col-md-6\">\n            <div class=\"panel panel-default\">\n                <div class=\"panel-body\">\n\n                  <div class=\"col-lg-6\">\n                    <div class=\"input-group\">\n                        <span class=\"input-group-btn\">\n                            <span class=\"btn btn-primary btn-file\">\n                                Browse… <input type=\"file\" id=\"file\" onchange=\"angular.element(this).scope().uploadFile(this)\">\n                            </span>\n                        </span>\n                        <input type=\"text\" id=\"fileName\" class=\"form-control\" readonly=\"\">\n                    </div>\n                    <span class=\"help-block\">\n                        Select your file to upload\n                    </span>\n                  </div>\n\n                  <div class=\"col-md-2\">\n                  <button class=\"btn btn-primary pull-left\" ng-click=\"upload()\">\n                      <i class=\"glyphicon glyphicon-floppy-disk\"></i> Upload\n                  </button>\n                  </div>\n\n                  <div class=\"col-md-4\">\n                    <a target=\"_self\" class=\"btn btn-primary pull-right\" href=\"../file/download\">\n                        <i class=\"glyphicon glyphicon-floppy-disk\"></i> Download\n                    </a>\n                  </div>\n\n                </div>\n            </div>\n        </div>\n      </div>\n</form>\n";
 
 },{}],15:[function(require,module,exports){
 /**

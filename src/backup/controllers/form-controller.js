@@ -1,9 +1,12 @@
-module.exports = function (fileService, $location) {
-    var vm = this;
+module.exports = function (backupService, $route, $scope) {
 
-    vm.upload = function () {
-        fileService.download().then(function () {
-            $location.path('/backup');
-        });
+    $scope.upload = function () {
+        backupService.upload();
     };
+
+    $scope.uploadFile = function(element) {
+      document.getElementById("fileName").value = element.value;
+    };
+
+
 };

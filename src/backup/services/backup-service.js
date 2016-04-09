@@ -1,16 +1,28 @@
 module.exports = function ($http, apiUrl) {
     var baseUrl = apiUrl.concat('/_mockenize/file');
 
-    this.download = function () {
-        return $http.get(baseUrl + "/download").then(function (response) {
-            return response.data;
-        });
-    };
-
     this.upload = function (key) {
-        return $http.post(baseUrl + "/upload").then(function (response) {
-            return dehydrate(response.data);
-        });
-    };
+        var f = document.getElementById('file').files[0];
+        if(f) {
+          r = new FileReader();
+          r.onloadend = function(e) {
+            var data = e.target.result;
 
+            $http({
+              method: 'POST',
+              url: baseUrl + '/upload',
+              data: data,
+              headers: {
+                  'Content-Type': 'application/octet-stream'
+              }
+            }).then(function (response) {
+                alert("Import file with sucess!");
+            }, function (response) {
+              alert(response.data);
+            });
+          }
+
+          r.readAsBinaryString(f);
+        }
+    };
 };
