@@ -7,7 +7,8 @@ var app = angular.module('mk.app', [
     require('angular-ui-bootstrap'),
     require('./mocks'),
     require('./proxies'),
-    require('./logs')
+    require('./logs'),
+    require('./backup')
 ]);
 
 app.constant('apiUrl', window.location.origin);
