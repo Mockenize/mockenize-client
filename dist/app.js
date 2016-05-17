@@ -64757,6 +64757,7 @@ module.exports = function ($compile) {
             switch (attrs.type) {
                 case 'number':
                 case 'text':
+                case 'checkbox':
                     buildInput();
                     break;
 
@@ -64789,7 +64790,8 @@ module.exports = function ($compile) {
                     type: attrs.type,
                     'ng-model': attrs.model,
                     'ng-options': attrs.options,
-                    'ng-required': attrs.required
+                    'ng-required': attrs.required,
+                    'ng-change' : attrs.onchange
                 });
                 controlWrapperEl.append(controlEl);
             }
@@ -64814,6 +64816,7 @@ module.exports = function ($compile) {
         }
     }
 };
+
 },{"./formgroup-template.html":16,"angular":8,"lodash":10}],16:[function(require,module,exports){
 module.exports = "<div class=\"form-group\">\n    <label class=\"control-label\"></label>\n    <div class=\"form-group-control\"></div>\n\n    <dl class=\"form-group-errors text-danger\">\n        <dt ng-message=\"required\">This field is required</dt>\n    </dl>\n</div>";
 
@@ -64834,7 +64837,7 @@ module.exports = function () {
     };
 };
 },{"./navbar-template.html":18}],18:[function(require,module,exports){
-module.exports = "<nav class=\"navbar navbar-default\">\n    <!-- Brand and toggle get grouped for better mobile display -->\n    <div class=\"navbar-header\">\n        <a class=\"navbar-brand\" href=\"http://mockenize.github.io\" target=\"_blank\">\n            <strong style=\"color: #293541\">{M}</strong>ockenize\n        </a>\n    </div>\n\n    <ul class=\"nav navbar-nav\">\n        <li ng-class=\"{ 'active': isRoute('/mocks') }\">\n            <a href=\"#/mocks\">Mocks</a>\n        </li>\n\n        <li ng-class=\"{ 'active': isRoute('/proxies') }\">\n            <a href=\"#/proxies\">Proxies</a>\n        </li>\n\n        <li ng-class=\"{ 'active': isRoute('/logs') }\">\n            <a href=\"#/logs\">Request Logs</a>\n        </li>\n\n        <li ng-class=\"{ 'active': isRoute('/backup') }\">\n            <a href=\"#/backup\">Backup / Restore</a>\n        </li>\n\n        <li ng-class=\"{ 'active': isRoute('/about') }\">\n            <a href=\"https://mockenize.github.io\" target=\"_blank\">About</a>\n        </li>\n    </ul>\n</nav>\n";
+module.exports = "<nav class=\"navbar navbar-default\">\n    <!-- Brand and toggle get grouped for better mobile display -->\n    <div class=\"navbar-header\">\n        <a class=\"navbar-brand\" href=\"http://mockenize.github.io\" target=\"_blank\">\n            <strong style=\"color: #293541\">{M}</strong>ockenize\n        </a>\n    </div>\n\n    <ul class=\"nav navbar-nav\">\n        <li ng-class=\"{ 'active': isRoute('/mocks') }\">\n            <a href=\"#/mocks\">Mocks</a>\n        </li>\n<!--\n        <li ng-class=\"{ 'active': isRoute('/proxies') }\">\n            <a href=\"#/proxies\">Proxies</a>\n        </li>\n-->\n        <li ng-class=\"{ 'active': isRoute('/logs') }\">\n            <a href=\"#/logs\">Request Logs</a>\n        </li>\n\n        <li ng-class=\"{ 'active': isRoute('/backup') }\">\n            <a href=\"#/backup\">Backup / Restore</a>\n        </li>\n\n        <li ng-class=\"{ 'active': isRoute('/about') }\">\n            <a href=\"https://mockenize.github.io\" target=\"_blank\">About</a>\n        </li>\n    </ul>\n</nav>\n";
 
 },{}],19:[function(require,module,exports){
 /**
@@ -64884,7 +64887,8 @@ var app = angular.module('mk.app', [
     require('./mocks'),
     require('./proxies'),
     require('./logs'),
-    require('./backup')
+    require('./backup'),
+    require('./scripts')
 ]);
 
 app.constant('apiUrl', window.location.origin);
@@ -64900,7 +64904,7 @@ app.config(function ($routeProvider) {
     $routeProvider.otherwise('/mocks');
 });
 
-},{"./backup":12,"./directives/formgroup/formgroup-directive":15,"./directives/navbar/navbar-directive":17,"./filters/httpstatus-filter":19,"./filters/kebabcase-filter":20,"./filters/padright-filter":21,"./logs":25,"./mocks":31,"./proxies":37,"angular":8,"angular-messages":2,"angular-route":4,"angular-ui-bootstrap":6,"jquery":9}],23:[function(require,module,exports){
+},{"./backup":12,"./directives/formgroup/formgroup-directive":15,"./directives/navbar/navbar-directive":17,"./filters/httpstatus-filter":19,"./filters/kebabcase-filter":20,"./filters/padright-filter":21,"./logs":25,"./mocks":31,"./proxies":37,"./scripts":41,"angular":8,"angular-messages":2,"angular-route":4,"angular-ui-bootstrap":6,"jquery":9}],23:[function(require,module,exports){
 /**
  * Created by rwatanabe on 05/02/16.
  */
@@ -65021,12 +65025,14 @@ module.exports = "<div class=\"container-fluid\">\n    <div class=\"page-header\
 module.exports = "<div class=\"container-fluid\">\n    <div class=\"page-header\">\n        <button class=\"btn btn-danger pull-right\" ng-click=\"vm.delete()\">\n            <i class=\"glyphicon glyphicon-trash\"></i> Delete\n        </button>\n\n        <h1>\n            <a href=\"#/logs\">Request Logs</a> / Show\n        </h1>\n\n        <div class=\"clearfix\"></div>\n    </div>\n\n    <div class=\"row\">\n        <div class=\"col-md-12\">\n            <div class=\"panel panel-default\">\n                <div class=\"panel-body\">\n                    <div class=\"col-xs-12\">\n                        <div class=\"form-group\">\n                            <label for=\"log-url\" class=\"control-label\" style=\"width: 60px\">Url</label>\n                            <span id=\"log-url\" class=\"form-control-static\">{{vm.log.url}}</span>\n                        </div>\n                    </div>\n\n                    <div class=\"col-xs-6\">\n                        <div class=\"form-group\">\n                            <label for=\"log-method\" class=\"control-label\" style=\"width: 60px\">Method</label>\n                            <span id=\"log-method\" class=\"form-control-static\">{{vm.log.method}}</span>\n                        </div>\n\n                        <div class=\"form-group\" style=\"margin-bottom: 0\">\n                            <label for=\"log-status\" class=\"control-label\" style=\"width: 60px\">Status</label>\n                            <span id=\"log-status\" class=\"form-control-static\">{{vm.log.response.status | httpStatus}}</span>\n                        </div>\n                    </div>\n\n                    <div class=\"col-xs-6\">\n                        <div class=\"form-group\">\n                            <label for=\"log-type\" class=\"control-label\" style=\"width: 60px\">Type</label>\n                            <span id=\"log-type\" class=\"form-control-static\">{{vm.log.type}}</span>\n                        </div>\n\n                        <div class=\"form-group\" style=\"margin-bottom: 0\">\n                            <label for=\"log-date\" class=\"control-label\" style=\"width: 60px\">Date</label>\n                            <span id=\"log-date\" class=\"form-control-static\">{{vm.log.date | date:'dd/MM/yy HH:mm:ss.sss'}}</span>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n\n        <div class=\"col-md-6\">\n            <div class=\"panel panel-default\">\n                <div class=\"panel-heading\">\n                    <button class=\"btn btn-link btn-xs pull-right\" ng-click=\"showRequestHeaders = !showRequestHeaders\">\n                        Toggle Headers\n                    </button>\n\n                    <h2 class=\"panel-title\">\n                        Request\n                    </h2>\n                </div>\n\n                <div class=\"panel-body\">\n                    <div ng-if=\"showRequestHeaders\">\n                        <h3 style=\"margin-bottom: 10px\">\n                            Headers\n                        </h3>\n\n                        <table class=\"table table-striped table-condensed table-bordered\">\n                            <tbody>\n                            <tr ng-repeat=\"(key, value) in vm.log.request.headers\">\n                                <td style=\"min-width: 150px\">{{key}}</td>\n                                <td>{{value}}</td>\n                            </tr>\n                            </tbody>\n                        </table>\n                    </div>\n\n                    <pre>{{vm.log.request.body | json}}</pre>\n                </div>\n            </div>\n        </div>\n\n\n        <div class=\"col-md-6\">\n            <div class=\"panel panel-default\">\n                <div class=\"panel-heading\">\n                    <button class=\"btn btn-link btn-xs pull-right\" ng-click=\"showResponseHeaders = !showResponseHeaders\">\n                        Toggle Headers\n                    </button>\n\n                    <h2 class=\"panel-title\">\n                        Response\n                    </h2>\n                </div>\n\n                <div class=\"panel-body\">\n                    <div ng-if=\"showResponseHeaders\">\n                        <h3 style=\"margin-bottom: 10px\">\n                            Headers\n                        </h3>\n\n                        <table class=\"table table-striped table-condensed table-bordered\">\n                            <tbody>\n                            <tr ng-repeat=\"(key, value) in vm.log.request.headers\">\n                                <td style=\"min-width: 150px\">{{key}}</td>\n                                <td>{{value}}</td>\n                            </tr>\n                            </tbody>\n                        </table>\n                    </div>\n\n                    <pre>{{vm.log.response.body | json}}</pre>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>";
 
 },{}],29:[function(require,module,exports){
-module.exports = function (mock, httpMethods, httpStatus, mockService, $location) {
+module.exports = function ($scope, mock, httpMethods, httpStatus, returnTypes, mockService, $location) {
     var vm = this;
     vm.httpMethods = httpMethods;
     vm.httpStatus = httpStatus;
+    vm.returnTypes = returnTypes;
     vm.selectedHeader = {};
     vm.mock = mock;
+    vm.lastBody = '';
 
     vm.addHeader = function () {
         vm.mock.headers.push(vm.selectedHeader);
@@ -65042,6 +65048,16 @@ module.exports = function (mock, httpMethods, httpStatus, mockService, $location
             $location.path('/mocks');
         });
     };
+
+    vm.updateReturnType = function(returnType) {
+      if(!vm.lastBody && returnType == 'Javascript Code') {
+        vm.lastBody = 'function func(url, body, jsonBody) { //TODO coding here }'
+      }
+      var tmp = vm.mock.body;
+      vm.mock.body = vm.lastBody;
+      vm.lastBody = tmp;
+    };
+
 };
 
 },{}],30:[function(require,module,exports){
@@ -65101,6 +65117,7 @@ mocksModule.config(function ($routeProvider) {
                 return {
                     method: 'GET',
                     status: 200,
+                    returnType: 'Static Text',
                     timeout: 0,
                     minTimeout: 0,
                     maxTimeout: 0,
@@ -65131,6 +65148,8 @@ mocksModule.config(function ($routeProvider) {
 mocksModule.service('mockService', require('./services/mock-service'));
 
 mocksModule.constant('httpMethods', ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS']);
+
+mocksModule.constant('returnTypes', ['Static Text', 'Javascript Code']);
 
 mocksModule.constant('httpStatus', [
     { code: 100, label: "100 CONTINUE" },
@@ -65204,7 +65223,7 @@ module.exports = mocksModule.name;
 /**
  * Created by rwatanabe on 05/02/16.
  */
-module.exports = function ($http, apiUrl) {
+module.exports = function ($http, apiUrl, scriptService) {
     var baseUrl = apiUrl.concat('/_mockenize/mocks');
 
     this.getAll = function () {
@@ -65236,38 +65255,46 @@ module.exports = function ($http, apiUrl) {
 
     function hydrate(obj) {
         var headers = {};
-
         _.forEach(obj.headers, function (header) {
             headers[header.key] = header.value;
         });
-
         obj.headers = headers;
-        if(headers['Content-Type'] == "application/json" && obj.body) {
+
+        if(obj.returnType == "Javascript Code") {
+          var scriptName = obj.method + '_' + obj.path.replace(/\//ig, '_')
+          scriptService.save(scriptName, obj.body);
+          obj.scriptName = scriptName;
+        } else if(headers['Content-Type'] == "application/json" && obj.body) {
           obj.body = JSON.parse(obj.body);
         }
+
         return obj;
     }
 
     function dehydrate(obj) {
         var headers = [];
-
         _.forOwn(obj.headers, function (value, key) {
             headers.push({
                 key: key,
                 value: value
             });
         });
-
         obj.headers = headers;
-        if(typeof(obj.body) == 'object') {
+
+        if(obj.scriptName) {
+          scriptService.getByKeySync(obj.scriptName).then(function(data) {
+            obj.body = data;
+          });
+        } else if(typeof(obj.body) == 'object') {
           obj.body = JSON.stringify(obj.body);
         }
+
         return obj;
     }
 };
 
 },{}],33:[function(require,module,exports){
-module.exports = "<form name=\"mockForm\" novalidate ng-submit=\"vm.save()\">\n    <div class=\"container-fluid\">\n        <div class=\"page-header\">\n            <button class=\"btn btn-primary pull-right\" type=\"submit\" ng-disabled=\"mockForm.$invalid\">\n                <i class=\"glyphicon glyphicon-floppy-disk\"></i> Save\n            </button>\n\n            <h1>\n                <a href=\"#/mocks\">Mocks</a> / <span ng-if=\"!vm.mock.key\">Create</span><span\n                    ng-if=\"vm.mock.key\">Edit</span>\n            </h1>\n\n            <div class=\"clearfix\"></div>\n        </div>\n\n        <div class=\"row\">\n            <div class=\"col-md-6\">\n                <div class=\"panel panel-default\">\n                    <div class=\"panel-body\">\n                        <mk-formgroup model=\"vm.mock.path\" type=\"text\" label=\"Path\" required=\"true\"></mk-formgroup>\n\n                        <div class=\"row\">\n                            <div class=\"col-md-6\">\n                                <mk-formgroup model=\"vm.mock.method\" type=\"choice\" label=\"Method\"\n                                              options=\"method for method in vm.httpMethods\"\n                                              required=\"true\"></mk-formgroup>\n                            </div>\n\n                            <div class=\"col-md-6\">\n                                <mk-formgroup model=\"vm.mock.status\" type=\"choice\" label=\"Response Code\"\n                                              options=\"httpStatus.code as httpStatus.label for httpStatus in vm.httpStatus\"\n                                              required=\"true\"></mk-formgroup>\n                            </div>\n                        </div>\n\n                        <mk-formgroup model=\"vm.mock.body\" type=\"text-multiline\" label=\"Response Body\"\n                                      rows=\"10\"></mk-formgroup>\n                    </div>\n                </div>\n            </div>\n\n            <div class=\"col-md-6\">\n                <div class=\"panel panel-default\">\n                    <div class=\"panel-heading\">\n                        <h2 class=\"panel-title\">\n                            Headers\n                        </h2>\n                    </div>\n\n                    <table id=\"mock-headers\" class=\"table table-striped\"\n                           style=\"margin-bottom: 0;\">\n                        <tbody>\n                        <tr ng-repeat=\"header in vm.mock.headers\">\n                            <td>\n                                <input type=\"text\" class=\"form-control\" placeholder=\"Key\"\n                                       ng-model=\"header.key\">\n                            </td>\n\n                            <td>\n                                <input type=\"text\" class=\"form-control\" placeholder=\"Key\"\n                                       ng-model=\"header.value\">\n                            </td>\n\n                            <td>\n                                <button type=\"button\" class=\"btn btn-danger btn-block\"\n                                        ng-click=\"vm.removeHeader(header)\">\n                                    <i class=\"glyphicon glyphicon-trash\"></i>\n                                </button>\n                            </td>\n                        </tr>\n\n                        <tr>\n                            <td>\n                                <input type=\"text\" class=\"form-control\" placeholder=\"Key\"\n                                       ng-model=\"vm.selectedHeader.key\">\n                            </td>\n\n                            <td>\n                                <input type=\"text\" class=\"form-control\" placeholder=\"Value\"\n                                       ng-model=\"vm.selectedHeader.value\">\n                            </td>\n\n                            <td>\n                                <button type=\"button\" class=\"btn btn-success btn-block\" ng-click=\"vm.addHeader()\">\n                                    <i class=\"glyphicon glyphicon-check\"></i>\n                                </button>\n                            </td>\n                        </tr>\n                        </tbody>\n                    </table>\n                </div>\n\n                <div class=\"panel panel-default\">\n                    <div class=\"panel-heading\">\n                        <h2 class=\"panel-title\">\n                            Settings\n                        </h2>\n                    </div>\n\n                    <div class=\"panel-body\">\n                        <div class=\"row\">\n                            <div class=\"col-md-4\">\n                                <mk-formgroup model=\"vm.mock.timeout\" type=\"number\" label=\"Timeout\"></mk-formgroup>\n                            </div>\n\n                            <div class=\"col-md-4\">\n                                <mk-formgroup model=\"vm.mock.maxTimeout\" type=\"number\"\n                                              label=\"Max Timeout\"></mk-formgroup>\n                            </div>\n\n                            <div class=\"col-md-4\">\n                                <mk-formgroup model=\"vm.mock.minTimeout\" type=\"number\"\n                                              label=\"Min Timeout\"></mk-formgroup>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</form>\n";
+module.exports = "<form name=\"mockForm\" novalidate ng-submit=\"vm.save()\">\n    <div class=\"container-fluid\">\n        <div class=\"page-header\">\n            <button class=\"btn btn-primary pull-right\" type=\"submit\" ng-disabled=\"mockForm.$invalid\">\n                <i class=\"glyphicon glyphicon-floppy-disk\"></i> Save\n            </button>\n\n            <h1>\n                <a href=\"#/mocks\">Mocks</a> / <span ng-if=\"!vm.mock.key\">Create</span><span\n                    ng-if=\"vm.mock.key\">Edit</span>\n            </h1>\n\n            <div class=\"clearfix\"></div>\n        </div>\n\n        <div class=\"row\">\n            <div class=\"col-md-6\">\n                <div class=\"panel panel-default\">\n                    <div class=\"panel-body\">\n                        <mk-formgroup model=\"vm.mock.path\" type=\"text\" label=\"Path\" required=\"true\"></mk-formgroup>\n\n                        <div class=\"row\">\n                            <div class=\"col-md-4\">\n                                <mk-formgroup model=\"vm.mock.method\" type=\"choice\" label=\"Method\"\n                                              options=\"method for method in vm.httpMethods\"\n                                              required=\"true\"></mk-formgroup>\n                            </div>\n\n                            <div class=\"col-md-4\">\n                                <mk-formgroup model=\"vm.mock.status\" type=\"choice\" label=\"Response Code\"\n                                              options=\"httpStatus.code as httpStatus.label for httpStatus in vm.httpStatus\"\n                                              required=\"true\" ></mk-formgroup>\n                            </div>\n\n                            <div class=\"col-md-4\">\n                                <mk-formgroup model=\"vm.mock.returnType\" type=\"choice\" label=\"Return Type\"\n                                              options=\"returnType for returnType in vm.returnTypes\"\n                                              required=\"true\" onchange=\"vm.updateReturnType(vm.mock.returnType)\"></mk-formgroup>\n                            </div>\n                        </div>\n                      <div class=\"row\">\n                        <mk-formgroup model=\"vm.mock.body\" type=\"text-multiline\" label=\"Response Body\" rows=\"10\"></mk-formgroup>\n                     </div>\n                </div>\n            </div>\n\n            <div class=\"col-md-6\">\n                <div class=\"panel panel-default\">\n                    <div class=\"panel-heading\">\n                        <h2 class=\"panel-title\">\n                            Headers\n                        </h2>\n                    </div>\n\n                    <table id=\"mock-headers\" class=\"table table-striped\"\n                           style=\"margin-bottom: 0;\">\n                        <tbody>\n                        <tr ng-repeat=\"header in vm.mock.headers\">\n                            <td>\n                                <input type=\"text\" class=\"form-control\" placeholder=\"Key\"\n                                       ng-model=\"header.key\">\n                            </td>\n\n                            <td>\n                                <input type=\"text\" class=\"form-control\" placeholder=\"Key\"\n                                       ng-model=\"header.value\">\n                            </td>\n\n                            <td>\n                                <button type=\"button\" class=\"btn btn-danger btn-block\"\n                                        ng-click=\"vm.removeHeader(header)\">\n                                    <i class=\"glyphicon glyphicon-trash\"></i>\n                                </button>\n                            </td>\n                        </tr>\n\n                        <tr>\n                            <td>\n                                <input type=\"text\" class=\"form-control\" placeholder=\"Key\"\n                                       ng-model=\"vm.selectedHeader.key\">\n                            </td>\n\n                            <td>\n                                <input type=\"text\" class=\"form-control\" placeholder=\"Value\"\n                                       ng-model=\"vm.selectedHeader.value\">\n                            </td>\n\n                            <td>\n                                <button type=\"button\" class=\"btn btn-success btn-block\" ng-click=\"vm.addHeader()\">\n                                    <i class=\"glyphicon glyphicon-check\"></i>\n                                </button>\n                            </td>\n                        </tr>\n                        </tbody>\n                    </table>\n                </div>\n\n                <div class=\"panel panel-default\">\n                    <div class=\"panel-heading\">\n                        <h2 class=\"panel-title\">\n                            Settings\n                        </h2>\n                    </div>\n\n                    <div class=\"panel-body\">\n                        <div class=\"row\">\n                            <div class=\"col-md-4\">\n                                <mk-formgroup model=\"vm.mock.timeout\" type=\"number\" label=\"Timeout\"></mk-formgroup>\n                            </div>\n\n                            <div class=\"col-md-4\">\n                                <mk-formgroup model=\"vm.mock.maxTimeout\" type=\"number\"\n                                              label=\"Max Timeout\"></mk-formgroup>\n                            </div>\n\n                            <div class=\"col-md-4\">\n                                <mk-formgroup model=\"vm.mock.minTimeout\" type=\"number\"\n                                              label=\"Min Timeout\"></mk-formgroup>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</form>\n";
 
 },{}],34:[function(require,module,exports){
 module.exports = "<div class=\"container-fluid\">\n    <div class=\"page-header\">\n        <div class=\"pull-right\">\n            <a class=\"btn btn-primary\" href=\"#/mocks/create\">\n                <i class=\"glyphicon glyphicon-plus\"></i> Create\n            </a>\n\n            <button class=\"btn btn-danger\" type=\"button\" ng-click=\"vm.deleteAll()\">\n                <i class=\"glyphicon glyphicon-remove\"></i> Clear\n            </button>\n        </div>\n\n        <h1>Mocks</h1>\n\n        <div class=\"clearfix\"></div>\n    </div>\n\n    <div class=\"row\">\n        <div class=\"col-md-12\">\n            <div class=\"jumbotron text-center\" ng-if=\"!vm.mocks.length\">\n                <h1 class=\"text-info\">\n                    You don't have created any mocks yet.\n                    <br>\n                    <small>Please create one to start!</small>\n                </h1>\n            </div>\n\n            <div class=\"list-group\">\n                <div class=\"list-group-item\" ng-repeat=\"mock in vm.mocks\" style=\"line-height: 22px\">\n                    <div class=\"pull-right\">\n                        <button class=\"btn btn-danger btn-xs\" ng-click=\"vm.deleteMock(mock)\">\n                            <i class=\"glyphicon glyphicon-trash\"></i>\n                        </button>\n                    </div>\n\n                    <span class=\"label label-default text-center\" style=\"min-width: 50px; margin-right: 10px\">{{mock.method}}</span>\n\n                    <a href=\"#/mocks/edit/{{mock.key}}\" style=\"margin-right: 10px\">{{mock.path}}</a>\n\n                    <small class=\"text-muted\" style=\"font-style: italic\">{{vm.apiUrl}}{{mock.path}}</small>\n\n                    <div class=\"clearfix\"></div>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>\n";
@@ -65411,5 +65438,40 @@ module.exports = "<form name=\"proxyForm\" novalidate ng-submit=\"vm.save()\">\n
 
 },{}],40:[function(require,module,exports){
 module.exports = "<div class=\"container-fluid\">\n    <div class=\"page-header\">\n        <div class=\"pull-right\">\n            <a class=\"btn btn-primary\" href=\"#/proxies/create\">\n                <i class=\"glyphicon glyphicon-plus\"></i> Create\n            </a>\n\n            <button class=\"btn btn-danger\" type=\"button\" ng-click=\"vm.deleteAll()\">\n                <i class=\"glyphicon glyphicon-remove\"></i> Clear\n            </button>\n        </div>\n\n        <h1>Proxies</h1>\n\n        <div class=\"clearfix\"></div>\n    </div>\n\n    <div class=\"row\">\n        <div class=\"col-md-12\">\n            <div class=\"jumbotron text-center\" ng-if=\"!vm.proxies.length\">\n                <h1 class=\"text-info\">\n                    You don't have created any proxies yet.\n                    <br>\n                    <small>Please create one to start!</small>\n                </h1>\n            </div>\n\n            <div class=\"list-group\">\n                <div class=\"list-group-item\" ng-repeat=\"proxy in vm.proxies\" style=\"line-height: 22px\">\n                    <div class=\"pull-right\">\n                        <button class=\"btn btn-danger btn-xs\" ng-click=\"vm.deleteProxy(proxy)\">\n                            <i class=\"glyphicon glyphicon-trash\"></i>\n                        </button>\n                    </div>\n\n                    <a href=\"#/proxies/edit/{{::proxy.key}}\" style=\"margin-right: 10px\">{{::proxy.name}}</a>\n\n                    <small class=\"text-muted\" style=\"font-style: italic\">{{::vm.apiUrl}}{{::proxy.path}}</small>\n\n                    <div class=\"clearfix\"></div>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>";
+
+},{}],41:[function(require,module,exports){
+var angular = require('angular');
+
+var scriptModule = angular.module('mk.scripts', []);
+
+scriptModule.service('scriptService', require('./services/script-service'));
+
+module.exports = scriptModule.name;
+
+},{"./services/script-service":42,"angular":8}],42:[function(require,module,exports){
+module.exports = function ($q, $http, apiUrl) {
+    var baseUrl = apiUrl.concat('/_mockenize/scripts');
+
+    this.getByKey = function (key) {
+        return $http.get(baseUrl + '/name/' + key).then(function (response) {
+            return response.data;
+        });
+    };
+
+    this.getByKeySync = function (key) {
+        var deferred = $q.defer();
+        $http.get(baseUrl + '/name/' + key).then(function() {
+          deferred.resolve(response.data);
+        });
+        return deferred.promise;
+    };
+
+    this.save = function (scriptName, scriptValue) {
+        return $http.post(baseUrl + '/' + scriptName, scriptValue).then(function (response) {
+            return response.data;
+        });
+    };
+
+};
 
 },{}]},{},[22]);

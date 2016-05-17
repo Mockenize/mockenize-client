@@ -8,7 +8,8 @@ var app = angular.module('mk.app', [
     require('./mocks'),
     require('./proxies'),
     require('./logs'),
-    require('./backup')
+    require('./backup'),
+    require('./scripts')
 ]);
 
 app.constant('apiUrl', window.location.origin);

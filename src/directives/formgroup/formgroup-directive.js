@@ -36,6 +36,7 @@ module.exports = function ($compile) {
             switch (attrs.type) {
                 case 'number':
                 case 'text':
+                case 'checkbox':
                     buildInput();
                     break;
 
@@ -68,7 +69,8 @@ module.exports = function ($compile) {
                     type: attrs.type,
                     'ng-model': attrs.model,
                     'ng-options': attrs.options,
-                    'ng-required': attrs.required
+                    'ng-required': attrs.required,
+                    'ng-change' : attrs.onchange
                 });
                 controlWrapperEl.append(controlEl);
             }

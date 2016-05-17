@@ -20,22 +20,27 @@
                         <mk-formgroup model="vm.mock.path" type="text" label="Path" required="true"></mk-formgroup>
 
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <mk-formgroup model="vm.mock.method" type="choice" label="Method"
                                               options="method for method in vm.httpMethods"
                                               required="true"></mk-formgroup>
                             </div>
 
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <mk-formgroup model="vm.mock.status" type="choice" label="Response Code"
                                               options="httpStatus.code as httpStatus.label for httpStatus in vm.httpStatus"
-                                              required="true"></mk-formgroup>
+                                              required="true" ></mk-formgroup>
+                            </div>
+
+                            <div class="col-md-4">
+                                <mk-formgroup model="vm.mock.returnType" type="choice" label="Return Type"
+                                              options="returnType for returnType in vm.returnTypes"
+                                              required="true" onchange="vm.updateReturnType(vm.mock.returnType)"></mk-formgroup>
                             </div>
                         </div>
-
-                        <mk-formgroup model="vm.mock.body" type="text-multiline" label="Response Body"
-                                      rows="10"></mk-formgroup>
-                    </div>
+                      <div class="row">
+                        <mk-formgroup model="vm.mock.body" type="text-multiline" label="Response Body" rows="10"></mk-formgroup>
+                     </div>
                 </div>
             </div>
 

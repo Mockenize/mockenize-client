@@ -1,9 +1,11 @@
-module.exports = function (mock, httpMethods, httpStatus, mockService, $location) {
+module.exports = function ($scope, mock, httpMethods, httpStatus, returnTypes, mockService, $location) {
     var vm = this;
     vm.httpMethods = httpMethods;
     vm.httpStatus = httpStatus;
+    vm.returnTypes = returnTypes;
     vm.selectedHeader = {};
     vm.mock = mock;
+    vm.lastBody = '';
 
     vm.addHeader = function () {
         vm.mock.headers.push(vm.selectedHeader);
@@ -19,4 +21,14 @@ module.exports = function (mock, httpMethods, httpStatus, mockService, $location
             $location.path('/mocks');
         });
     };
+
+    vm.updateReturnType = function(returnType) {
+      if(!vm.lastBody && returnType == 'Javascript Code') {
+        vm.lastBody = 'function func(url, body, jsonBody) { //TODO coding here }'
+      }
+      var tmp = vm.mock.body;
+      vm.mock.body = vm.lastBody;
+      vm.lastBody = tmp;
+    };
+
 };
