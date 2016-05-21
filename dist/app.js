@@ -65032,7 +65032,7 @@ module.exports = function ($scope, mock, httpMethods, httpStatus, returnTypes, m
     vm.returnTypes = returnTypes;
     vm.selectedHeader = {};
     vm.mock = mock;
-    vm.lastBody = '';
+    vm.lastBody = mock.body;
 
     vm.addHeader = function () {
         vm.mock.headers.push(vm.selectedHeader);
@@ -65050,12 +65050,11 @@ module.exports = function ($scope, mock, httpMethods, httpStatus, returnTypes, m
     };
 
     $scope.$watch('vm.mock.returnType', function (value) {
-      if(!vm.lastBody && !vm.mock.body && vm.mock.returnType == 'Javascript Code') {
-        vm.lastBody = 'function func(url, body, jsonBody) {\n //TODO coding here \n return {"message":"ok"} \n}'
-      }
-      var tmp = vm.mock.body;
-      vm.mock.body = vm.lastBody;
-      vm.lastBody = tmp;
+        if(vm.mock.body != vm.lastBody) {
+            var tmp = vm.mock.body;
+            vm.mock.body = vm.lastBody;
+            vm.lastBody = tmp;
+        }
     });
 
 };
