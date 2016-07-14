@@ -10,9 +10,9 @@ grunt.loadNpmTasks('grunt-electron');
 
 grunt.initConfig({
     copy: {
-        electron: {
-            src: 'main.js',
-            dest: 'dist/main.js'
+        codemirror: {
+            src: 'node_modules/codemirror/lib/codemirror.css',
+            dest: 'dist/codemirror.css'
         },
 
         html: {
@@ -77,20 +77,8 @@ grunt.initConfig({
             files: ['src/index.html'],
             tasks: ['copy']
         }
-    },
-
-    electron: {
-        build: {
-            options: {
-                dir: 'dist',
-                out: 'bin',
-                version: '0.25.3',
-                platform: 'linux',
-                arch: 'x64'
-            }
-        }
     }
 });
 
-grunt.registerTask('default', ['copy', 'browserify', 'less', 'connect']);
-grunt.registerTask('watch', ['copy', 'browserify', 'less', 'connect', 'watch']);
+grunt.registerTask('default', ['copy', 'browserify', 'less']);
+grunt.registerTask('build-watch', ['default', 'connect', 'watch']);

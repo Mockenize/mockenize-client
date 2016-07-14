@@ -1,45 +1,40 @@
-<form name="backupForm" novalidate>
-    <div class="container-fluid">
-        <div class="page-header">
-            <h1>
-                <a href="#/backup">Backup</a>
-            </h1>
+<form name="backupForm" class="container-fluid" novalidate>
+    <div class="page-header">
+        <h1>
+            Backup
+        </h1>
 
-            <div class="clearfix"></div>
-        </div>
+        <div class="clearfix"></div>
     </div>
 
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-4 col-md-offset-4">
             <div class="panel panel-default">
                 <div class="panel-body">
 
-                  <div class="col-lg-6">
+                  <div class="form-group">
                     <div class="input-group">
+                        <input type="text" id="fileName" class="form-control" readonly="">
                         <span class="input-group-btn">
-                            <span class="btn btn-primary btn-file">
+                            <span class="btn btn-default btn-file">
                                 Browse… <input type="file" id="file" onchange="angular.element(this).scope().uploadFile(this)">
                             </span>
                         </span>
-                        <input type="text" id="fileName" class="form-control" readonly="">
                     </div>
                     <span class="help-block">
                         Select your file to upload
                     </span>
                   </div>
 
-                  <div class="col-md-2">
-                  <button class="btn btn-primary pull-left" ng-click="upload()">
-                      <i class="glyphicon glyphicon-floppy-disk"></i> Upload
-                  </button>
-                  </div>
+                  <div class="form-group">
+                      <button class="btn btn-primary" ng-click="upload()">
+                          <i class="glyphicon glyphicon-upload"></i> Upload
+                      </button>
 
-                  <div class="col-md-4">
-                    <a target="_self" class="btn btn-primary pull-right" href="../file/download">
-                        <i class="glyphicon glyphicon-floppy-disk"></i> Download
-                    </a>
-                  </div>
-
+                      <a target="_self" class="btn btn-primary" href="../file/download">
+                          <i class="glyphicon glyphicon-floppy-disk"></i> Download
+                      </a>
+                    </div>
                 </div>
             </div>
         </div>

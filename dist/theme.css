@@ -3016,6 +3016,13 @@ select[multiple].input-lg {
   cursor: inherit;
   display: block;
 }
+.CodeMirror {
+  border: 1px solid #ddd;
+  height: auto;
+}
+.CodeMirror .CodeMirror-scroll {
+  min-height: 300px;
+}
 .btn {
   display: inline-block;
   margin-bottom: 0;

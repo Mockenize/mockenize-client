@@ -76,21 +76,21 @@ module.exports = function ($compile) {
             }
 
             function buildTextarea() {
-                var controlEl = angular.element('<textarea class="form-control"></textarea>');
+                var controlEl = angular.element('<ui-codemirror></ui-codemirror>');
                 controlEl.attr({
                     id: groupName,
                     name: groupName,
                     type: attrs.type,
                     rows: attrs.rows || 3,
                     'ng-model': attrs.model,
-                    'ng-required': attrs.required
+                    'ng-required': attrs.required,
+                    'ui-codemirror-opts': '{ lineWrapping : true, lineNumbers: true, mode: "javascript" }'
                 });
                 controlWrapperEl.append(controlEl);
             }
 
             return function (scope, el, attrs, form) {
                 scope[groupName] = form[groupName];
-                $compile(el)(scope);
             };
         }
     }

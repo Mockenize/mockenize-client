@@ -34,10 +34,11 @@
 
                             <div class="col-md-4">
                                 <mk-formgroup model="vm.mock.returnType" type="choice" label="Return Type"
-                                              options="returnType for returnType in vm.returnTypes"
+                                              options="returnType.code as returnType.label for returnType in vm.returnTypes"
                                               required="true"></mk-formgroup>
                             </div>
                         </div>
+
 
                         <mk-formgroup model="vm.mock.body" type="text-multiline" label="Response Body"
                                       rows="10"></mk-formgroup>

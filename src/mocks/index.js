@@ -27,7 +27,7 @@ mocksModule.config(function ($routeProvider) {
                 return {
                     method: 'GET',
                     status: 200,
-                    returnType: 'Static Text',
+                    returnType: 'TEXT',
                     timeout: 0,
                     minTimeout: 0,
                     maxTimeout: 0,
@@ -59,7 +59,10 @@ mocksModule.service('mockService', require('./services/mock-service'));
 
 mocksModule.constant('httpMethods', ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS']);
 
-mocksModule.constant('returnTypes', ['Static Text', 'Javascript Code']);
+mocksModule.constant('returnTypes', [
+    { code: 'TEXT', label: 'Static Text' },
+    { code: 'JSCODE', label: 'Javascript Code' }
+]);
 
 mocksModule.constant('httpStatus', [
     { code: 100, label: "100 CONTINUE" },

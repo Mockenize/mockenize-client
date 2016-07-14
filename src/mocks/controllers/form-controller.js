@@ -5,7 +5,6 @@ module.exports = function ($scope, mock, httpMethods, httpStatus, returnTypes, m
     vm.returnTypes = returnTypes;
     vm.selectedHeader = {};
     vm.mock = mock;
-    vm.lastBody = mock.body;
 
     vm.addHeader = function () {
         vm.mock.headers.push(vm.selectedHeader);
@@ -23,11 +22,8 @@ module.exports = function ($scope, mock, httpMethods, httpStatus, returnTypes, m
     };
 
     $scope.$watch('vm.mock.returnType', function (value) {
-        if(vm.mock.body != vm.lastBody) {
-            var tmp = vm.mock.body;
-            vm.mock.body = vm.lastBody;
-            vm.lastBody = tmp;
+        if (value == 'JSCODE' && (vm.mock.body == null || vm.mock.body.trim().length == 0)) {
+            vm.mock.body = "function func(path, body, obj) {\n\treturn \"Hello, World!\";\n}";
         }
     });
-
 };

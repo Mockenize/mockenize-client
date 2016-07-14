@@ -38,13 +38,20 @@ module.exports = function ($http, apiUrl, scriptService) {
         });
         obj.headers = headers;
 
-        if(obj.returnType == "Javascript Code") {
+        if (!headers['Content-Type']) {
+            headers['Content-Type'] = "application/json";
+        }
+
+        if(obj.returnType == "JSCODE") {
           var scriptName = obj.method + '_' + obj.path.replace(/\//ig, '_')
           scriptService.save(scriptName, obj.body);
           obj.scriptName = scriptName;
-          obj.body = null;
         } else if(headers['Content-Type'] == "application/json" && obj.body) {
-          obj.body = JSON.parse(obj.body);
+          try {
+              obj.body = JSON.parse(obj.body);
+          } catch (e) {
+              console.warn("Invalid json body.");
+          }
         }
 
         return obj;
@@ -59,13 +66,13 @@ module.exports = function ($http, apiUrl, scriptService) {
             });
         });
         obj.headers = headers;
-        obj.returnType = 'Static Text';
+        obj.returnType = 'TEXT';
 
         if(obj.scriptName) {
           scriptService.getByKeySync(obj.scriptName).then(function(data) {
             obj.body = data;
           });
-          obj.returnType = 'Javascript Code';
+          obj.returnType = 'JSCODE';
         } else if(typeof(obj.body) == 'object') {
           obj.body = JSON.stringify(obj.body);
         }
